@@ -261,6 +261,171 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/06/Redis%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lbb-1011">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lbb-1011">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/06/Redis%E5%AE%89%E8%A3%85/" itemprop="url">Redis安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-06T13:29:27+08:00">
+                2020-06-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>#### Redis安装</p>
+<p>- 解压</p>
+<p>```</p>
+<p>tar -zxf redis-6.0-rc1.tar.gz</p>
+<p>```</p>
+<p>- redis解压包挪到/user/local</p>
+<p>```</p>
+<p>mv redis-6.0-rc1 /usr/local/</p>
+<p>```</p>
+<p>- 编译 进入文件夹/usr/local/redis-6.0-rc1</p>
+<p>```</p>
+<p>make</p>
+<p>```</p>
+<p>- 安装redis 进入文件夹src</p>
+<p>```</p>
+<p>make install</p>
+<p>```</p>
+<p>- 为了方便管理 在Redis目录下创建 bin 和 etc</p>
+<p>```</p>
+<p>[root@VM_0_9_centos redis-4.0.9]# mkdir bin</p>
+<p>[root@VM_0_9_centos redis-4.0.9]# mkdir etc</p>
+<p>```</p>
+<p>```</p>
+<p>mv redis.conf /usr/local/redis-4.0.9/etc/</p>
+<p>mv mkreleasehdr.sh redis-benchmark redis-check-aof redis-check-rdb redis-cli redis-server /usr/local/redis-4.0.9/bin/</p>
+<p>```</p>
+<p>- 启动Redis 进入 bin目录</p>
+<p>```</p>
+<p>[root@VM_0_9_centos bin]# ./redis-server</p>
+<p>```</p>
+<p>- 关闭redis</p>
+<p>```</p>
+<p>./redis-cli shutdown</p>
+<p>```</p>
+<p>- 配置后台启动</p>
+<p>&gt; 首先编辑conf文件，将daemonize属性改为yes（表明需要在后台运行）</p>
+<p>再次启动redis服务，并指定启动服务配置文件</p>
+<p>```</p>
+<p>./redis-server /usr/local/redis-4.0.9/etc/redis.conf</p>
+<p>```</p>
+<p>#### 遇到的问题</p>
+<p>- 无法远程连接</p>
+<p>&gt; 修改redis.conf 注释掉 bind 127.0.0.1</p>
+<p>&gt; protected-mode 改为 no</p>
+<p>- Redis Error: Connection failed. (Error: connect ETIMEDOUT)</p>
+<p>&gt;</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/04/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -426,7 +591,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
