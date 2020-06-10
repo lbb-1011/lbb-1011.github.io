@@ -128,7 +128,7 @@
       </tags>
   </entry>
   <entry>
-    <title>next左边栏日志点击有问题</title>
+    <title>IntlliJ IDEA开荒配置</title>
     <url>/2020/06/08/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%AF%87/IntelliJ%20IDEA%E5%BC%80%E8%8D%92%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<h3 id="文件多行显示"><a href="#文件多行显示" class="headerlink" title="文件多行显示"></a>文件多行显示</h3><ul>
 <li><p>File-&gt;Settings-&gt;Editor-&gt;General-&gt;Editor tabs</p>
@@ -151,7 +151,7 @@
       </tags>
   </entry>
   <entry>
-    <title>next左边栏日志点击有问题</title>
+    <title>IntlliJ IDEA快捷键-windows默认</title>
     <url>/2020/06/08/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%AF%87/IntelliJ%20IDEA%E5%BF%AB%E6%8D%B7%E9%94%AE-windows%E9%BB%98%E8%AE%A4/</url>
     <content><![CDATA[]]></content>
       <categories>
@@ -162,7 +162,7 @@
       </tags>
   </entry>
   <entry>
-    <title>next左边栏日志点击有问题</title>
+    <title>IntlliJ IDEA 插件</title>
     <url>/2020/06/08/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%AF%87/IntelliJ%20IDEA%E6%8F%92%E4%BB%B6/</url>
     <content><![CDATA[<h2 id="Key-Promoter-X"><a href="#Key-Promoter-X" class="headerlink" title="Key Promoter X"></a>Key Promoter X</h2><p>快捷键使用提示<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608153207.png" alt="提示内容"></p>
 <h2 id="Lombok"><a href="#Lombok" class="headerlink" title="Lombok"></a>Lombok</h2><p>自动生成getter/setter/toString方法，entity中不需要再写了</p>
