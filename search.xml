@@ -1,6 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>next功能待完善</title>
+    <url>/2020/06/12/hexo/next%E5%8A%9F%E8%83%BD-%E5%BE%85%E5%AE%8C%E5%96%84/</url>
+    <content><![CDATA[<h3 id="评论功能"><a href="#评论功能" class="headerlink" title="评论功能"></a>评论功能</h3><p>leanCode+valine</p>
+<h3 id="置顶功能"><a href="#置顶功能" class="headerlink" title="置顶功能"></a>置顶功能</h3><p>修改hexo-generator-index插件，hexo文件目录中，把node_modules/hexo-generator-index/lib/generator.js中代码替换为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#39;use strict&#39;;</span><br><span class="line">var pagination &#x3D; require(&#39;hexo-pagination&#39;);</span><br><span class="line">module.exports &#x3D; function(locals)&#123;</span><br><span class="line">  var config &#x3D; this.config;</span><br><span class="line">  var posts &#x3D; locals.posts;</span><br><span class="line">    posts.data &#x3D; posts.data.sort(function(a, b) &#123;</span><br><span class="line">        if(a.top &amp;&amp; b.top) &#123; &#x2F;&#x2F; 两篇文章top都有定义</span><br><span class="line">            if(a.top &#x3D;&#x3D; b.top) return b.date - a.date; &#x2F;&#x2F; 若top值一样则按照文章日期降序排</span><br><span class="line">            else return b.top - a.top; &#x2F;&#x2F; 否则按照top值降序排</span><br><span class="line">        &#125;</span><br><span class="line">        else if(a.top &amp;&amp; !b.top) &#123; &#x2F;&#x2F; 以下是只有一篇文章top有定义，那么将有top的排在前面</span><br><span class="line">            return -1;</span><br><span class="line">        &#125;</span><br><span class="line">        else if(!a.top &amp;&amp; b.top) &#123;</span><br><span class="line">            return 1;</span><br><span class="line">        &#125;</span><br><span class="line">        else return b.date - a.date; &#x2F;&#x2F; 都没定义按照文章日期降序排</span><br><span class="line">    &#125;);</span><br><span class="line">  var paginationDir &#x3D; config.pagination_dir || &#39;page&#39;;</span><br><span class="line">  return pagination(&#39;&#39;, posts, &#123;</span><br><span class="line">    perPage: config.index_generator.per_page,</span><br><span class="line">    layout: [&#39;index&#39;, &#39;archive&#39;],</span><br><span class="line">    format: paginationDir + &#39;&#x2F;%d&#x2F;&#39;,</span><br><span class="line">    data: &#123;</span><br><span class="line">      __index: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="代码复制"><a href="#代码复制" class="headerlink" title="代码复制"></a>代码复制</h3><h3 id="3D标签"><a href="#3D标签" class="headerlink" title="3D标签"></a>3D标签</h3><h3 id="修改底部标签样式"><a href="#修改底部标签样式" class="headerlink" title="修改底部标签样式"></a>修改底部标签样式</h3><p>修改Blog\themes\next\layout_macro\post.swig中文件，command+f搜索rel=”tag”&gt;#，将#替换成<i class="fa fa-tag"></i></p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>next</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java8新特性Optional</title>
+    <url>/2020/06/12/Java8%E6%96%B0%E7%89%B9%E6%80%A7Optional/</url>
+    <content><![CDATA[<h1 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a>Optional</h1><p><a href="https://www.cnblogs.com/zhangboyu/p/7580262.html" target="_blank" rel="noopener">参考文章</a></p>
+<blockquote>
+<p>主要解决的     空指针异常（NullPointerException） 问题<br>Optional是个容器，可以包含对象T，也可以放null</p>
+<ul>
+<li>本文例子采用 <a href="">Lambda表达式</a>  的写法 </li>
+</ul>
+</blockquote>
+<h2 id="创建Optional实例"><a href="#创建Optional实例" class="headerlink" title="创建Optional实例"></a>创建Optional实例</h2><h2 id="链式调用"><a href="#链式调用" class="headerlink" title="链式调用"></a>链式调用</h2><h2 id="Java9增强"><a href="#Java9增强" class="headerlink" title="Java9增强"></a>Java9增强</h2><blockquote>
+<p>Java 9 为Optional类新增了3个方法：<kbd>or()</kbd> ifpresendOrElse() stream()</p>
+</blockquote>
+]]></content>
+  </entry>
+  <entry>
+    <title>考驾照/科目三</title>
+    <url>/2020/06/11/%E8%80%83%E9%A9%BE%E7%85%A7/%E7%A7%91%E7%9B%AE%E4%B8%89/</url>
+    <content><![CDATA[<h2 id="灯光的使用"><a href="#灯光的使用" class="headerlink" title="灯光的使用"></a>灯光的使用</h2><ul>
+<li>照明不良或没有照明，使用远光灯</li>
+<li>照明良好，跟车，会车，左右转弯，直行通过路口使用近光灯（夜间直行通过使用近光灯）</li>
+<li>夜间通过，超过，远近光灯交替使用</li>
+<li>路边临时停车，车辆出故障，交通事故，小灯（示廓灯）+双跳（危险警示灯）</li>
+</ul>
+<h2 id="考试步骤"><a href="#考试步骤" class="headerlink" title="考试步骤"></a>考试步骤</h2><ul>
+<li>调座椅 系安全带 打左转灯 回头看 拉手刹（转向灯亮三秒再动） 坡道起步</li>
+<li>15 换二档</li>
+<li>20 换三档</li>
+<li>30 换四档</li>
+<li>40 换五档</li>
+<li><kbd>松油门 松刹车 离合踩到底换挡</kbd></li>
+<li>转向灯打开3秒后方可变道等等</li>
+<li>转弯踩离合，刹到20换2档，路口点刹转头</li>
+<li>一档不超过50米 二档不超过100米 五档行驶100米</li>
+</ul>
+]]></content>
+      <categories>
+        <category>驾考</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>MQ/Untitled</title>
+    <url>/2020/06/11/MQ/Untitled/</url>
+    <content><![CDATA[<p>照明不良或没有照明，使用远光灯<br>照明良好，跟车，会车，左右转弯，直行通过路口，使用近光灯（夜间直行通过使用近光灯）<br>夜间通过、超过，远近光灯交替使用<br>路边临时停车，车辆出故障，交通事故，小灯（示廓灯）+双跳（危险警示灯）</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>设计模式/工厂模式</title>
+    <url>/2020/06/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>IntelliJ IDEA开荒配置</title>
+    <url>/2020/06/08/IntelliJ%20IDEA%E5%BC%80%E8%8D%92%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h3 id="文件多行显示"><a href="#文件多行显示" class="headerlink" title="文件多行显示"></a>文件多行显示</h3><ul>
+<li><p>File-&gt;Settings-&gt;Editor-&gt;General-&gt;Editor tabs</p>
+</li>
+<li><p>不勾选 show tabs in single row</p>
+<p><img src="http://qbhzsftsb.bkt.clouddn.com/image-20200608170244716.png" alt="image-20200608170244716"></p>
+<h3 id="显示占用内存"><a href="#显示占用内存" class="headerlink" title="显示占用内存"></a>显示占用内存</h3></li>
+<li><p>File-&gt;Settings-&gt;Appearance &amp; Behavior-&gt;Appearance</p>
+</li>
+<li><p>勾选 Show memory indicator</p>
+</li>
+</ul>
+<p><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608170608.png" alt="苏宁豆芽图片20200608170608"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>IntlliJ IDEA开荒配置</title>
+    <url>/2020/06/08/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%AF%87/IntelliJ%20IDEA%E5%BC%80%E8%8D%92%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h3 id="文件多行显示"><a href="#文件多行显示" class="headerlink" title="文件多行显示"></a>文件多行显示</h3><ul>
+<li><p>File-&gt;Settings-&gt;Editor-&gt;General-&gt;Editor tabs</p>
+</li>
+<li><p>不勾选 show tabs in single row</p>
+<p><img src="http://qbhzsftsb.bkt.clouddn.com/image-20200608170244716.png" alt="image-20200608170244716"></p>
+</li>
+</ul>
+<h3 id="显示占用内存"><a href="#显示占用内存" class="headerlink" title="显示占用内存"></a>显示占用内存</h3><ul>
+<li>File-&gt;Settings-&gt;Appearance &amp; Behavior-&gt;Appearance</li>
+<li>勾选 Show memory indicator</li>
+</ul>
+<p><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608170608.png" alt="苏宁豆芽图片20200608170608"></p>
+]]></content>
+      <categories>
+        <category>开发工具</category>
+      </categories>
+      <tags>
+        <tag>IntelliJ IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IntelliJ IDEA快捷键-windows默认</title>
+    <url>/2020/06/08/IntelliJ%20IDEA%E5%BF%AB%E6%8D%B7%E9%94%AE-windows%E9%BB%98%E8%AE%A4/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>IntlliJ IDEA快捷键-windows默认</title>
+    <url>/2020/06/08/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%AF%87/IntelliJ%20IDEA%E5%BF%AB%E6%8D%B7%E9%94%AE-windows%E9%BB%98%E8%AE%A4/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>开发工具</category>
+      </categories>
+      <tags>
+        <tag>IntelliJ IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IntelliJ IDEA插件</title>
+    <url>/2020/06/08/IntelliJ%20IDEA%E6%8F%92%E4%BB%B6/</url>
+    <content><![CDATA[<h2 id="Key-Promoter-X"><a href="#Key-Promoter-X" class="headerlink" title="Key Promoter X"></a>Key Promoter X</h2><p>快捷键使用提示<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608153207.png" alt="提示内容"></p>
+<h2 id="Lombok"><a href="#Lombok" class="headerlink" title="Lombok"></a>Lombok</h2><p>自动生成getter/setter/toString方法，entity中不需要再写了</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ActivityEntity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Rainbow-Brackets"><a href="#Rainbow-Brackets" class="headerlink" title="Rainbow Brackets"></a>Rainbow Brackets</h2><p>彩虹括号<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608153459.png" alt="样式展示"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>IntlliJ IDEA 插件</title>
+    <url>/2020/06/08/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%AF%87/IntelliJ%20IDEA%E6%8F%92%E4%BB%B6/</url>
+    <content><![CDATA[<h2 id="Key-Promoter-X"><a href="#Key-Promoter-X" class="headerlink" title="Key Promoter X"></a>Key Promoter X</h2><p>快捷键使用提示<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608153207.png" alt="提示内容"></p>
+<h2 id="Lombok"><a href="#Lombok" class="headerlink" title="Lombok"></a>Lombok</h2><p>自动生成getter/setter/toString方法，entity中不需要再写了</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ActivityEntity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Rainbow-Brackets"><a href="#Rainbow-Brackets" class="headerlink" title="Rainbow Brackets"></a>Rainbow Brackets</h2><p>彩虹括号<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608153459.png" alt="样式展示"></p>
+]]></content>
+      <categories>
+        <category>开发工具</category>
+      </categories>
+      <tags>
+        <tag>IntelliJ IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hexo常用操作</title>
     <url>/2020/06/06/hexo/hexo/</url>
     <content><![CDATA[<p>参考文章<a href="https://www.jianshu.com/p/dfcae367aae6" target="_blank" rel="noopener">Mac下基于github的hexo博客搭建及常用功能添加</a></p>
@@ -36,10 +182,21 @@
       </tags>
   </entry>
   <entry>
-    <title>hexo/next评论系统选择</title>
-    <url>/2020/06/08/hexo/next%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E9%80%89%E6%8B%A9/</url>
-    <content><![CDATA[<p>来必力<br>leanCode+valine</p>
+    <title>next分页显示有问题</title>
+    <url>/2020/06/06/hexo/next%E5%88%86%E9%A1%B5/</url>
+    <content><![CDATA[<p>错误显示<br><img src="http://qbhzsftsb.bkt.clouddn.com/WX20200606-172116%402x.png" alt="image-20200606170555849"><br>修改代码 themes\next\layout_partials\pagination.swig<br>原来的代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if page.prev or page.next %&#125;</span><br><span class="line">  &lt;nav class&#x3D;&quot;pagination&quot;&gt;</span><br><span class="line">    &#123;&#123;</span><br><span class="line">      paginator(&#123;</span><br><span class="line">        prev_text: &#39;&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;&#39;,</span><br><span class="line">        next_text: &#39;&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;&#39;,</span><br><span class="line">        mid_size: 1</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;&#125;</span><br><span class="line">  &lt;&#x2F;nav&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+<p>修改为</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if page.prev or page.next %&#125;</span><br><span class="line">  &lt;nav class&#x3D;&quot;pagination&quot;&gt;</span><br><span class="line">    &#123;&#123;</span><br><span class="line">      paginator(&#123;</span><br><span class="line">        prev_text: &#39;&lt;&#39;,</span><br><span class="line">        next_text: &#39;&gt;&#39;,</span><br><span class="line">        mid_size: 1</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;&#125;</span><br><span class="line">  &lt;&#x2F;nav&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+
 ]]></content>
+      <categories>
+        <category>hexo_next</category>
+      </categories>
+      <tags>
+        <tag>next配置</tag>
+        <tag>next_分页</tag>
+      </tags>
   </entry>
   <entry>
     <title>next主题常用菜单的配置</title>
@@ -67,23 +224,6 @@
         <tag>next配置</tag>
         <tag>next_tags</tag>
         <tag>next_categories</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>next分页显示有问题</title>
-    <url>/2020/06/06/hexo/next%E5%88%86%E9%A1%B5/</url>
-    <content><![CDATA[<p>错误显示<br><img src="http://qbhzsftsb.bkt.clouddn.com/WX20200606-172116%402x.png" alt="image-20200606170555849"><br>修改代码 themes\next\layout_partials\pagination.swig<br>原来的代码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if page.prev or page.next %&#125;</span><br><span class="line">  &lt;nav class&#x3D;&quot;pagination&quot;&gt;</span><br><span class="line">    &#123;&#123;</span><br><span class="line">      paginator(&#123;</span><br><span class="line">        prev_text: &#39;&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;&#39;,</span><br><span class="line">        next_text: &#39;&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;&#39;,</span><br><span class="line">        mid_size: 1</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;&#125;</span><br><span class="line">  &lt;&#x2F;nav&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
-<p>修改为</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if page.prev or page.next %&#125;</span><br><span class="line">  &lt;nav class&#x3D;&quot;pagination&quot;&gt;</span><br><span class="line">    &#123;&#123;</span><br><span class="line">      paginator(&#123;</span><br><span class="line">        prev_text: &#39;&lt;&#39;,</span><br><span class="line">        next_text: &#39;&gt;&#39;,</span><br><span class="line">        mid_size: 1</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;&#125;</span><br><span class="line">  &lt;&#x2F;nav&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>hexo_next</category>
-      </categories>
-      <tags>
-        <tag>next配置</tag>
-        <tag>next_分页</tag>
       </tags>
   </entry>
   <entry>
@@ -126,136 +266,5 @@
       <tags>
         <tag>redis</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>IntlliJ IDEA开荒配置</title>
-    <url>/2020/06/08/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%AF%87/IntelliJ%20IDEA%E5%BC%80%E8%8D%92%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h3 id="文件多行显示"><a href="#文件多行显示" class="headerlink" title="文件多行显示"></a>文件多行显示</h3><ul>
-<li><p>File-&gt;Settings-&gt;Editor-&gt;General-&gt;Editor tabs</p>
-</li>
-<li><p>不勾选 show tabs in single row</p>
-<p><img src="http://qbhzsftsb.bkt.clouddn.com/image-20200608170244716.png" alt="image-20200608170244716"></p>
-</li>
-</ul>
-<h3 id="显示占用内存"><a href="#显示占用内存" class="headerlink" title="显示占用内存"></a>显示占用内存</h3><ul>
-<li>File-&gt;Settings-&gt;Appearance &amp; Behavior-&gt;Appearance</li>
-<li>勾选 Show memory indicator</li>
-</ul>
-<p><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608170608.png" alt="苏宁豆芽图片20200608170608"></p>
-]]></content>
-      <categories>
-        <category>开发工具</category>
-      </categories>
-      <tags>
-        <tag>IntelliJ IDEA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>IntlliJ IDEA快捷键-windows默认</title>
-    <url>/2020/06/08/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%AF%87/IntelliJ%20IDEA%E5%BF%AB%E6%8D%B7%E9%94%AE-windows%E9%BB%98%E8%AE%A4/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>开发工具</category>
-      </categories>
-      <tags>
-        <tag>IntelliJ IDEA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>IntlliJ IDEA 插件</title>
-    <url>/2020/06/08/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%AF%87/IntelliJ%20IDEA%E6%8F%92%E4%BB%B6/</url>
-    <content><![CDATA[<h2 id="Key-Promoter-X"><a href="#Key-Promoter-X" class="headerlink" title="Key Promoter X"></a>Key Promoter X</h2><p>快捷键使用提示<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608153207.png" alt="提示内容"></p>
-<h2 id="Lombok"><a href="#Lombok" class="headerlink" title="Lombok"></a>Lombok</h2><p>自动生成getter/setter/toString方法，entity中不需要再写了</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ActivityEntity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Rainbow-Brackets"><a href="#Rainbow-Brackets" class="headerlink" title="Rainbow Brackets"></a>Rainbow Brackets</h2><p>彩虹括号<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608153459.png" alt="样式展示"></p>
-]]></content>
-      <categories>
-        <category>开发工具</category>
-      </categories>
-      <tags>
-        <tag>IntelliJ IDEA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>IntelliJ IDEA快捷键-windows默认</title>
-    <url>/2020/06/08/IntelliJ%20IDEA%E5%BF%AB%E6%8D%B7%E9%94%AE-windows%E9%BB%98%E8%AE%A4/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>IntelliJ IDEA开荒配置</title>
-    <url>/2020/06/08/IntelliJ%20IDEA%E5%BC%80%E8%8D%92%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h3 id="文件多行显示"><a href="#文件多行显示" class="headerlink" title="文件多行显示"></a>文件多行显示</h3><ul>
-<li><p>File-&gt;Settings-&gt;Editor-&gt;General-&gt;Editor tabs</p>
-</li>
-<li><p>不勾选 show tabs in single row</p>
-<p><img src="http://qbhzsftsb.bkt.clouddn.com/image-20200608170244716.png" alt="image-20200608170244716"></p>
-<h3 id="显示占用内存"><a href="#显示占用内存" class="headerlink" title="显示占用内存"></a>显示占用内存</h3></li>
-<li><p>File-&gt;Settings-&gt;Appearance &amp; Behavior-&gt;Appearance</p>
-</li>
-<li><p>勾选 Show memory indicator</p>
-</li>
-</ul>
-<p><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608170608.png" alt="苏宁豆芽图片20200608170608"></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>IntelliJ IDEA插件</title>
-    <url>/2020/06/08/IntelliJ%20IDEA%E6%8F%92%E4%BB%B6/</url>
-    <content><![CDATA[<h2 id="Key-Promoter-X"><a href="#Key-Promoter-X" class="headerlink" title="Key Promoter X"></a>Key Promoter X</h2><p>快捷键使用提示<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608153207.png" alt="提示内容"></p>
-<h2 id="Lombok"><a href="#Lombok" class="headerlink" title="Lombok"></a>Lombok</h2><p>自动生成getter/setter/toString方法，entity中不需要再写了</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ActivityEntity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Rainbow-Brackets"><a href="#Rainbow-Brackets" class="headerlink" title="Rainbow Brackets"></a>Rainbow Brackets</h2><p>彩虹括号<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608153459.png" alt="样式展示"></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>Java8新特性Optional</title>
-    <url>/2020/06/12/Java8%E6%96%B0%E7%89%B9%E6%80%A7Optional/</url>
-    <content><![CDATA[<h1 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a>Optional</h1><p><a href="https://www.cnblogs.com/zhangboyu/p/7580262.html" target="_blank" rel="noopener">参考文章</a></p>
-<blockquote>
-<p>主要解决的     空指针异常（NullPointerException） 问题<br>Optional是个容器，可以包含对象T，也可以放null</p>
-<ul>
-<li>本文例子采用 <a href="">Lambda表达式</a>  的写法 </li>
-</ul>
-</blockquote>
-<h2 id="创建Optional实例"><a href="#创建Optional实例" class="headerlink" title="创建Optional实例"></a>创建Optional实例</h2><h2 id="链式调用"><a href="#链式调用" class="headerlink" title="链式调用"></a>链式调用</h2><h2 id="Java9增强"><a href="#Java9增强" class="headerlink" title="Java9增强"></a>Java9增强</h2><blockquote>
-<p>Java 9 为Optional类新增了3个方法：or() ifpresendOrElse() stream()</p>
-</blockquote>
-]]></content>
-  </entry>
-  <entry>
-    <title>设计模式/工厂模式</title>
-    <url>/2020/06/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>MQ/Untitled</title>
-    <url>/2020/06/11/MQ/Untitled/</url>
-    <content><![CDATA[<p>照明不良或没有照明，使用远光灯<br>照明良好，跟车，会车，左右转弯，直行通过路口，使用近光灯（夜间直行通过使用近光灯）<br>夜间通过、超过，远近光灯交替使用<br>路边临时停车，车辆出故障，交通事故，小灯（示廓灯）+双跳（危险警示灯）</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>考驾照/科目三</title>
-    <url>/2020/06/11/%E8%80%83%E9%A9%BE%E7%85%A7/%E7%A7%91%E7%9B%AE%E4%B8%89/</url>
-    <content><![CDATA[<h2 id="灯光的使用"><a href="#灯光的使用" class="headerlink" title="灯光的使用"></a>灯光的使用</h2><ul>
-<li>照明不良或没有照明，使用远光灯</li>
-<li>照明良好，跟车，会车，左右转弯，直行通过路口使用近光灯（夜间直行通过使用近光灯）</li>
-<li>夜间通过，超过，远近光灯交替使用</li>
-<li>路边临时停车，车辆出故障，交通事故，小灯（示廓灯）+双跳（危险警示灯）</li>
-</ul>
-<h2 id="考试步骤"><a href="#考试步骤" class="headerlink" title="考试步骤"></a>考试步骤</h2><ul>
-<li>调座椅 系安全带 打左转灯 回头看 拉手刹（转向灯亮三秒再动） 坡道起步</li>
-<li>15 换二档</li>
-<li>20 换三档</li>
-<li>30 换四档</li>
-<li>40 换五档</li>
-<li><kbd>松油门 松刹车 离合踩到底换挡</kbd></li>
-<li>转向灯打开3秒后方可变道等等</li>
-<li>转弯踩离合，刹到20换2档，路口点刹转头</li>
-<li>一档不超过50米 二档不超过100米 五档行驶100米</li>
-</ul>
-]]></content>
-      <categories>
-        <category>驾考</category>
-      </categories>
   </entry>
 </search>
