@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>next功能待完善</title>
-    <url>/2010/06/12/hexo/next%E5%8A%9F%E8%83%BD-%E5%BE%85%E5%AE%8C%E5%96%84/</url>
+    <title>next常见配置功能插件</title>
+    <url>/2020/06/12/hexo/next%E5%8A%9F%E8%83%BD-%E5%BE%85%E5%AE%8C%E5%96%84/</url>
     <content><![CDATA[<h3 id="评论功能"><a href="#评论功能" class="headerlink" title="评论功能"></a>评论功能</h3><p>leanCode+valine</p>
-<h3 id="置顶功能"><a href="#置顶功能" class="headerlink" title="置顶功能"></a>置顶功能</h3><p>修改hexo-generator-index插件，hexo文件目录中，把node_modules/hexo-generator-index/lib/generator.js中代码替换为：</p>
+<h3 id="置顶功能"><a href="#置顶功能" class="headerlink" title="置顶功能"></a>置顶功能</h3><p>修改hexo-generator-index插件，hexo文件目录中，把<code>node_modules/hexo-generator-index/lib/generator.js</code>中代码替换为：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#39;use strict&#39;;</span><br><span class="line">var pagination &#x3D; require(&#39;hexo-pagination&#39;);</span><br><span class="line">module.exports &#x3D; function(locals)&#123;</span><br><span class="line">  var config &#x3D; this.config;</span><br><span class="line">  var posts &#x3D; locals.posts;</span><br><span class="line">    posts.data &#x3D; posts.data.sort(function(a, b) &#123;</span><br><span class="line">        if(a.top &amp;&amp; b.top) &#123; &#x2F;&#x2F; 两篇文章top都有定义</span><br><span class="line">            if(a.top &#x3D;&#x3D; b.top) return b.date - a.date; &#x2F;&#x2F; 若top值一样则按照文章日期降序排</span><br><span class="line">            else return b.top - a.top; &#x2F;&#x2F; 否则按照top值降序排</span><br><span class="line">        &#125;</span><br><span class="line">        else if(a.top &amp;&amp; !b.top) &#123; &#x2F;&#x2F; 以下是只有一篇文章top有定义，那么将有top的排在前面</span><br><span class="line">            return -1;</span><br><span class="line">        &#125;</span><br><span class="line">        else if(!a.top &amp;&amp; b.top) &#123;</span><br><span class="line">            return 1;</span><br><span class="line">        &#125;</span><br><span class="line">        else return b.date - a.date; &#x2F;&#x2F; 都没定义按照文章日期降序排</span><br><span class="line">    &#125;);</span><br><span class="line">  var paginationDir &#x3D; config.pagination_dir || &#39;page&#39;;</span><br><span class="line">  return pagination(&#39;&#39;, posts, &#123;</span><br><span class="line">    perPage: config.index_generator.per_page,</span><br><span class="line">    layout: [&#39;index&#39;, &#39;archive&#39;],</span><br><span class="line">    format: paginationDir + &#39;&#x2F;%d&#x2F;&#39;,</span><br><span class="line">    data: &#123;</span><br><span class="line">      __index: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>博文添加，top值越大越靠前</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: next功能待完善</span><br><span class="line">date: 2020-06-12 21:13:35</span><br><span class="line">tags: </span><br><span class="line">- next</span><br><span class="line">categories:  </span><br><span class="line">- 其他</span><br><span class="line">top: 1000 # top值越大越靠前</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>添加置顶标签，修改文件<code>./themes/next/layout/_macro/post.swig</code>，在<code>&lt;div class=&quot;post-meta&quot;&gt;</code>添加如下代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if post.top %&#125;</span><br><span class="line">  &lt;i class&#x3D;&quot;fa fa-thumb-tack&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">  &lt;font color&#x3D;7D26CD&gt;置顶&lt;&#x2F;font&gt;</span><br><span class="line">  &lt;span class&#x3D;&quot;post-meta-divider&quot;&gt;|&lt;&#x2F;span&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="代码复制"><a href="#代码复制" class="headerlink" title="代码复制"></a>代码复制</h3><h3 id="顶部加进度条"><a href="#顶部加进度条" class="headerlink" title="顶部加进度条"></a>顶部加进度条</h3><blockquote>
-<p>切换到博客项目的根路径，执行以下命令</p>
+<p>切换到文件夹的<code>/themes/next</code>文件夹下，执行以下命令</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;theme-next-pace source&#x2F;lib&#x2F;pace</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>进入next的配置文件_config.yml中设置</p>
+<p>进入next的配置文件<code>_config.yml</code>中设置</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Progress bar in the top during page loading.</span><br><span class="line"># Dependencies: https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;theme-next-pace</span><br><span class="line">pace: true #是否开启进度条</span><br><span class="line"># Themes list:</span><br><span class="line"># pace-theme-big-counter | pace-theme-bounce | pace-theme-barber-shop | pace-theme-center-atom</span><br><span class="line"># pace-theme-center-circle | pace-theme-center-radar | pace-theme-center-simple | pace-theme-corner-indicator</span><br><span class="line"># pace-theme-fill-left | pace-theme-flash | pace-theme-loading-bar | pace-theme-mac-osx | pace-theme-minimal</span><br><span class="line"># For example</span><br><span class="line">pace_theme: pace-theme-center-atom #选择进度条样式</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Progress bar in the top during page loading.</span><br><span class="line">pace: true &#x2F;&#x2F;开启进度条</span><br><span class="line"># Themes list:</span><br><span class="line">#pace-theme-big-counter</span><br><span class="line">#pace-theme-bounce</span><br><span class="line">#pace-theme-barber-shop</span><br><span class="line">#pace-theme-center-atom</span><br><span class="line">#pace-theme-center-circle</span><br><span class="line">#pace-theme-center-radar</span><br><span class="line">#pace-theme-center-simple</span><br><span class="line">#pace-theme-corner-indicator</span><br><span class="line">#pace-theme-fill-left</span><br><span class="line">#pace-theme-flash</span><br><span class="line">#pace-theme-loading-bar</span><br><span class="line">#pace-theme-mac-osx</span><br><span class="line">#pace-theme-minimal</span><br><span class="line"># For example</span><br><span class="line">pace_theme: pace-theme-center-simple &#x2F;&#x2F;进度条样式</span><br><span class="line"># pace_theme: pace-theme-minimal</span><br></pre></td></tr></table></figure>
 <h3 id="3D标签"><a href="#3D标签" class="headerlink" title="3D标签"></a>3D标签</h3><p>Hexo博客Next主题建立标签云hexo-tag-cloud及效果展示<br><a href="https://blog.csdn.net/aoman_hao/article/details/89416634" target="_blank" rel="noopener">https://blog.csdn.net/aoman_hao/article/details/89416634</a></p>
 <h3 id="修改背景图"><a href="#修改背景图" class="headerlink" title="修改背景图"></a>修改背景图</h3><blockquote>
-<p>修改themes\next\source\css\ _custom\custom.styl文件</p>
+<p>修改<code>themes\next\source\css\ _custom\custom.styl</code>文件</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 添加以下代码，添加背景图片</span><br><span class="line">body &#123;</span><br><span class="line">    background:url(https:&#x2F;&#x2F;source.unsplash.com&#x2F;random&#x2F;2560x1440);</span><br><span class="line">    background-repeat: no-repeat;</span><br><span class="line">    background-attachment:fixed;</span><br><span class="line">    background-position:50% 50%;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-<h3 id="修改文章底部标签样式"><a href="#修改文章底部标签样式" class="headerlink" title="修改文章底部标签样式"></a>修改文章底部标签样式</h3><p>修改Blog\themes\next\layout_macro\post.swig中文件，command+f搜索rel=”tag”&gt;#，将#替换成<i class="fa fa-tag"></i></p>
-<h3 id="右下角添加宠物"><a href="#右下角添加宠物" class="headerlink" title="右下角添加宠物"></a>右下角添加宠物</h3><p>切换到博客项目的根路径，执行以下命令</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install -save hexo-helper-live2d</span><br></pre></td></tr></table></figure>
-<p>在hexo的——config.yml中添加如下参数</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">live2d:</span><br><span class="line">  enable: true</span><br><span class="line">  scriptFrom: local</span><br><span class="line">  pluginRootPath: live2dw&#x2F;</span><br><span class="line">  pluginJsPath: lib&#x2F;</span><br><span class="line">  pluginModelPath: assets&#x2F;</span><br><span class="line">  model:</span><br><span class="line">    use: live2d-widget-model-wanko</span><br><span class="line">  display:</span><br><span class="line">    position: right</span><br><span class="line">    width: 150</span><br><span class="line">    height: 300</span><br><span class="line">  mobile:</span><br><span class="line">    show: true</span><br></pre></td></tr></table></figure>
-<p>重新启动项目</p>
+<h3 id="修改文章底部标签样式"><a href="#修改文章底部标签样式" class="headerlink" title="修改文章底部标签样式"></a>修改文章底部标签样式</h3><p>修改<code>hexo\themes\next\layout\_macro\post.swig</code>中文件，<code>command</code>+<code>f</code>搜索<code>rel=&quot;tag&quot;&gt;#</code>，将#替换成<i class="fa fa-tag"></i></p>
+<h3 id="右下角添加宠物"><a href="#右下角添加宠物" class="headerlink" title="右下角添加宠物"></a>右下角添加宠物</h3><p>1、切换到博客项目的根路径，执行以下命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install -save hexo-helper-live2d</span><br><span class="line">npm install live2d-widget-model-wanko(主题可选如下)</span><br></pre></td></tr></table></figure>
+<p>2、mac OS安装时出现错误</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gyp: No Xcode or CLT version detected!</span><br></pre></td></tr></table></figure>
+<p>3、解决办法，参考<a href=""></a>，然后执行步骤1<br>4、在hexo的<code>_config.yml</code>中添加如下参数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">live2d:</span><br><span class="line">  enable: true</span><br><span class="line">  scriptFrom: local # 默认</span><br><span class="line">  pluginRootPath: live2dw&#x2F; # 插件在站点上的根目录(相对路径)</span><br><span class="line">  pluginJsPath: lib&#x2F; # 脚本文件相对与插件根目录路径</span><br><span class="line">  pluginModelPath: assets&#x2F; # 模型文件相对与插件根目录路径</span><br><span class="line">  tagMode: false # 标签模式, 是否仅替换 live2d tag标签而非插入到所有页面中</span><br><span class="line">  debug: false # 调试, 是否在控制台输出日志</span><br><span class="line">  model:</span><br><span class="line">    use: live2d-widget-model-wanko</span><br><span class="line">  display:</span><br><span class="line">    position: right</span><br><span class="line">    width: 145</span><br><span class="line">    height: 315</span><br><span class="line">  mobile:</span><br><span class="line">    show: false # 是否在移动设备上显示</span><br><span class="line">    scale: 0.5 # 移动设备上的缩放</span><br><span class="line">  react:</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>步骤1、步骤4可选值</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">live2d-widget-model-chitose</span><br><span class="line">live2d-widget-model-epsilon2_1</span><br><span class="line">live2d-widget-model-gf</span><br><span class="line">live2d-widget-model-haru&#x2F;01 (use npm install --save live2d-widget-model-haru)</span><br><span class="line">live2d-widget-model-haru&#x2F;02 (use npm install --save live2d-widget-model-haru)</span><br><span class="line">live2d-widget-model-haruto</span><br><span class="line">live2d-widget-model-hibiki</span><br><span class="line">live2d-widget-model-hijiki</span><br><span class="line">live2d-widget-model-izumi</span><br><span class="line">live2d-widget-model-koharu</span><br><span class="line">live2d-widget-model-miku</span><br><span class="line">live2d-widget-model-ni-j</span><br><span class="line">live2d-widget-model-nico</span><br><span class="line">live2d-widget-model-nietzsche</span><br><span class="line">live2d-widget-model-nipsilon</span><br><span class="line">live2d-widget-model-nito</span><br><span class="line">live2d-widget-model-shizuku</span><br><span class="line">live2d-widget-model-tororo</span><br><span class="line">live2d-widget-model-tsumiki</span><br><span class="line">live2d-widget-model-unitychan</span><br><span class="line">live2d-widget-model-wanko</span><br><span class="line">live2d-widget-model-z16</span><br></pre></td></tr></table></figure>
+<p>5、重新启动项目</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</span><br></pre></td></tr></table></figure>
 
+<p>6、删除主题，删除<code>hexo/node_modules/hexo-helper-live2d</code>文件夹，修改<code>hexo/package.json</code>文件，删除live2d相关内容</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;dependencies&quot;: &#123;</span><br><span class="line">    &quot;hexo&quot;: &quot;^4.2.1&quot;,</span><br><span class="line">    &quot;hexo-deployer-git&quot;: &quot;^2.1.0&quot;,</span><br><span class="line">    &quot;hexo-helper-live2d&quot;: &quot;^3.1.1&quot;,</span><br><span class="line">    &quot;live2d-widget-model-haruto&quot;: &quot;^1.0.5&quot;,</span><br><span class="line">    &quot;live2d-widget-model-wanko&quot;: &quot;^1.0.5&quot;,</span><br><span class="line">    &quot;live2d-widget-model-z16&quot;: &quot;^1.0.5&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -42,6 +52,27 @@
 
 
 ]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>next</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>npm执行报错</title>
+    <url>/2020/06/14/Mac%20OS/npm/</url>
+    <content><![CDATA[<p>执行npm出现如下问题</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gyp: No Xcode or CLT version detected!</span><br><span class="line">	gyp ERR! configure error </span><br><span class="line">	gyp ERR! stack Error: &#96;gyp&#96; failed with exit code: 1</span><br><span class="line">	gyp ERR! stack     at ChildProcess.onCpExit (&#x2F;usr&#x2F;local&#x2F;lib&#x2F;node_modules&#x2F;npm&#x2F;node_modules&#x2F;node-gyp&#x2F;lib&#x2F;configure.js:351:16)</span><br><span class="line">	gyp ERR! stack     at ChildProcess.emit (events.js:315:20)</span><br><span class="line">	gyp ERR! stack     at Process.ChildProcess._handle.onexit (internal&#x2F;child_process.js:275:12)</span><br><span class="line">	gyp ERR! System Darwin 19.5.0</span><br><span class="line">	gyp ERR! command &quot;&#x2F;usr&#x2F;local&#x2F;bin&#x2F;node&quot; &quot;&#x2F;usr&#x2F;local&#x2F;lib&#x2F;node_modules&#x2F;npm&#x2F;node_modules&#x2F;node-gyp&#x2F;bin&#x2F;node-gyp.js&quot; &quot;rebuild&quot;</span><br><span class="line">	gyp ERR! cwd &#x2F;Users&#x2F;liubeibei&#x2F;hexo&#x2F;blog&#x2F;node_modules&#x2F;hexo-helper-live2d&#x2F;node_modules&#x2F;fsevents</span><br><span class="line">	gyp ERR! node -v v12.18.0</span><br><span class="line">	gyp ERR! node-gyp -v v5.1.0</span><br><span class="line">	gyp ERR! not ok</span><br></pre></td></tr></table></figure>
+
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="1-尝试用如下命令进行修复"><a href="#1-尝试用如下命令进行修复" class="headerlink" title="1. 尝试用如下命令进行修复"></a>1. 尝试用如下命令进行修复</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ xcode-select --install</span><br></pre></td></tr></table></figure>
+
+<p>系统提示如下信息：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xcode-select: error: <span class="built_in">command</span> line tools are already installed, use <span class="string">"Software Update"</span> to install updates</span><br></pre></td></tr></table></figure>
+
+<p>而事实上并没有所谓的”Software Update”可以更新</p>
+<h3 id="2-正确姿势"><a href="#2-正确姿势" class="headerlink" title="2. 正确姿势"></a>2. 正确姿势</h3><p>一筹莫展之际，找到如下解决方案：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo rm -rf $(xcode-select -<span class="built_in">print</span>-path)</span><br><span class="line">$ xcode-select --install</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>其他</category>
       </categories>
@@ -95,8 +126,7 @@
   <entry>
     <title>MQ/Untitled</title>
     <url>/2020/06/11/MQ/Untitled/</url>
-    <content><![CDATA[<p>照明不良或没有照明，使用远光灯<br>照明良好，跟车，会车，左右转弯，直行通过路口，使用近光灯（夜间直行通过使用近光灯）<br>夜间通过、超过，远近光灯交替使用<br>路边临时停车，车辆出故障，交通事故，小灯（示廓灯）+双跳（危险警示灯）</p>
-]]></content>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>设计模式/工厂模式</title>
