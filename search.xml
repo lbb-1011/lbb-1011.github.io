@@ -3,7 +3,21 @@
   <entry>
     <title>next常见配置功能插件</title>
     <url>/2020/06/12/hexo/next%E5%8A%9F%E8%83%BD-%E5%BE%85%E5%AE%8C%E5%96%84/</url>
-    <content><![CDATA[<h3 id="评论功能"><a href="#评论功能" class="headerlink" title="评论功能"></a>评论功能</h3><p>leanCode+valine</p>
+    <content><![CDATA[<h3 id="评论功能"><a href="#评论功能" class="headerlink" title="评论功能"></a>评论功能</h3><blockquote>
+<p>leanCode + Valine-Admin</p>
+</blockquote>
+<p>valine部署的实现</p>
+<ul>
+<li>注册leanCode</li>
+<li>创建应用获取appid、appkey</li>
+<li>在next主题的配置文件中修改以下内容<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Valine.</span><br><span class="line"># You can get your appid and appkey from https:&#x2F;&#x2F;leancloud.cn</span><br><span class="line"># more info please open https:&#x2F;&#x2F;valine.js.org</span><br><span class="line"># 评论功能</span><br><span class="line">valine:</span><br><span class="line">  enable: true</span><br><span class="line">  appid:  # your leancloud application appid</span><br><span class="line">  appkey:  # your leancloud application appkey</span><br><span class="line">  notify: false # mail notifier , https:&#x2F;&#x2F;github.com&#x2F;xCss&#x2F;Valine&#x2F;wiki</span><br><span class="line">  verify: false # Verification code</span><br><span class="line">  placeholder: 欢迎留言指正 # comment box placeholder</span><br><span class="line">  avatar: mm # gravatar style</span><br><span class="line">  guest_info: nick,mail # custom comment header</span><br><span class="line">  pageSize: 10 # pagination size</span><br></pre></td></tr></table></figure>
+Valine-Admin 的实现<blockquote>
+<p>参考DesertsP大神的GitHub</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;github.com&#x2F;DesertsP&#x2F;Valine-Admin</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
 <h3 id="置顶功能"><a href="#置顶功能" class="headerlink" title="置顶功能"></a>置顶功能</h3><p>修改hexo-generator-index插件，hexo文件目录中，把<code>node_modules/hexo-generator-index/lib/generator.js</code>中代码替换为：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#39;use strict&#39;;</span><br><span class="line">var pagination &#x3D; require(&#39;hexo-pagination&#39;);</span><br><span class="line">module.exports &#x3D; function(locals)&#123;</span><br><span class="line">  var config &#x3D; this.config;</span><br><span class="line">  var posts &#x3D; locals.posts;</span><br><span class="line">    posts.data &#x3D; posts.data.sort(function(a, b) &#123;</span><br><span class="line">        if(a.top &amp;&amp; b.top) &#123; &#x2F;&#x2F; 两篇文章top都有定义</span><br><span class="line">            if(a.top &#x3D;&#x3D; b.top) return b.date - a.date; &#x2F;&#x2F; 若top值一样则按照文章日期降序排</span><br><span class="line">            else return b.top - a.top; &#x2F;&#x2F; 否则按照top值降序排</span><br><span class="line">        &#125;</span><br><span class="line">        else if(a.top &amp;&amp; !b.top) &#123; &#x2F;&#x2F; 以下是只有一篇文章top有定义，那么将有top的排在前面</span><br><span class="line">            return -1;</span><br><span class="line">        &#125;</span><br><span class="line">        else if(!a.top &amp;&amp; b.top) &#123;</span><br><span class="line">            return 1;</span><br><span class="line">        &#125;</span><br><span class="line">        else return b.date - a.date; &#x2F;&#x2F; 都没定义按照文章日期降序排</span><br><span class="line">    &#125;);</span><br><span class="line">  var paginationDir &#x3D; config.pagination_dir || &#39;page&#39;;</span><br><span class="line">  return pagination(&#39;&#39;, posts, &#123;</span><br><span class="line">    perPage: config.index_generator.per_page,</span><br><span class="line">    layout: [&#39;index&#39;, &#39;archive&#39;],</span><br><span class="line">    format: paginationDir + &#39;&#x2F;%d&#x2F;&#39;,</span><br><span class="line">    data: &#123;</span><br><span class="line">      __index: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>博文添加，top值越大越靠前</p>
@@ -41,7 +55,8 @@
 
 <p>6、删除主题，删除<code>hexo/node_modules/hexo-helper-live2d</code>文件夹，修改<code>hexo/package.json</code>文件，删除live2d相关内容</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;dependencies&quot;: &#123;</span><br><span class="line">    &quot;hexo&quot;: &quot;^4.2.1&quot;,</span><br><span class="line">    &quot;hexo-deployer-git&quot;: &quot;^2.1.0&quot;,</span><br><span class="line">    &quot;hexo-helper-live2d&quot;: &quot;^3.1.1&quot;,</span><br><span class="line">    &quot;live2d-widget-model-haruto&quot;: &quot;^1.0.5&quot;,</span><br><span class="line">    &quot;live2d-widget-model-wanko&quot;: &quot;^1.0.5&quot;,</span><br><span class="line">    &quot;live2d-widget-model-z16&quot;: &quot;^1.0.5&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<h3 id="Markdown渲染风格"><a href="#Markdown渲染风格" class="headerlink" title="Markdown渲染风格"></a>Markdown渲染风格</h3><p>Hexo 默认使用 hexo-renderer-marked 引擎渲染网页</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --save</span><br><span class="line">#挑一个喜欢的</span><br><span class="line">npm install hexo-renderer-kramed --save</span><br><span class="line">npm install hexo-renderer-markdown-it --save</span><br><span class="line">npm install hexo-include-markdown --save</span><br><span class="line">npm install hexo-markdown-it-tippy --save</span><br></pre></td></tr></table></figure>
 
 
 
@@ -56,18 +71,13 @@
         <category>其他</category>
       </categories>
       <tags>
-        <tag>next</tag>
+        <tag>next配置</tag>
       </tags>
   </entry>
   <entry>
-    <title>设计模式/责任链模式</title>
-    <url>/2020/06/16/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>壁纸网站</title>
-    <url>/2020/06/14/%E5%A3%81%E7%BA%B8%E7%BD%91%E7%AB%99/</url>
-    <content><![CDATA[<h1 id="不只是Unsplash-–-免费高清图片-照片素材网站分享（多图）"><a href="#不只是Unsplash-–-免费高清图片-照片素材网站分享（多图）" class="headerlink" title="不只是Unsplash – 免费高清图片/照片素材网站分享（多图）"></a>不只是Unsplash – 免费高清图片/照片素材网站分享（多图）</h1><h2 id="免费超高清照片素材站"><a href="#免费超高清照片素材站" class="headerlink" title="免费超高清照片素材站"></a>免费超高清照片素材站</h2><p>照片素材一般用于制作网页背景、宣传海报、banner或 是写博客文章的时候比较常用。</p>
+    <title>免费超高清照片素材站</title>
+    <url>/2020/06/18/%E5%A3%81%E7%BA%B8%E7%BD%91%E7%AB%99/</url>
+    <content><![CDATA[<h2 id="免费超高清照片素材站"><a href="#免费超高清照片素材站" class="headerlink" title="免费超高清照片素材站"></a>免费超高清照片素材站</h2><p>照片素材一般用于制作网页背景、宣传海报、banner或 是写博客文章的时候比较常用。</p>
 <p><img src="https://img.liaosam.com/uploads/2016/06/89.jpg" alt="89"></p>
 <hr>
 <p><a href="https://unsplash.com/" target="_blank" rel="noopener">https://unsplash.com/</a><br>收藏多年的免费超高清图片素材网站，每张图片都特别唯美，料网很多文章图片也来自于此站。该网站的图片没有任何版权问题，你可以放心使用。Unsplash 是一个真正免费高质量照片的网站，主打风景图片，照片分辨率也很大，用来做网页素材已经足够，该照片网站每10天更新10张照片。<code>如果打开慢，请自行FQ。</code></p>
@@ -111,6 +121,55 @@
 <p><a href="https://www.nipic.com/" target="_blank" rel="noopener">https://www.nipic.com/</a><br>昵图网，这个不用多介绍了。图片大排档。。</p>
 <h2 id="壁纸站"><a href="#壁纸站" class="headerlink" title="壁纸站"></a>壁纸站</h2><p><a href="https://zoomwalls.com/" target="_blank" rel="noopener">https://zoomwalls.com/</a>   </p>
 ]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>责任链模式</title>
+    <url>/2020/06/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>工厂模式</title>
+    <url>/2020/06/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java8新特性Optional</title>
+    <url>/2020/06/18/Java8%E6%96%B0%E7%89%B9%E6%80%A7Optional/</url>
+    <content><![CDATA[<h1 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a>Optional</h1><p><a href="https://www.cnblogs.com/zhangboyu/p/7580262.html" target="_blank" rel="noopener">参考文章</a></p>
+<blockquote>
+<p>主要解决的     空指针异常（NullPointerException） 问题<br>Optional是个容器，可以包含对象T，也可以放null</p>
+<ul>
+<li>本文例子采用 <a href="">Lambda表达式</a>  的写法 </li>
+</ul>
+</blockquote>
+<h2 id="创建Optional实例"><a href="#创建Optional实例" class="headerlink" title="创建Optional实例"></a>创建Optional实例</h2><h2 id="链式调用"><a href="#链式调用" class="headerlink" title="链式调用"></a>链式调用</h2><h2 id="Java9增强"><a href="#Java9增强" class="headerlink" title="Java9增强"></a>Java9增强</h2><blockquote>
+<p>Java 9 为Optional类新增了3个方法：<kbd>or()</kbd> ifpresendOrElse() stream()</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>java基础</tag>
+      </tags>
   </entry>
   <entry>
     <title>npm执行报错</title>
@@ -134,74 +193,15 @@
       </tags>
   </entry>
   <entry>
-    <title>Java8新特性Optional</title>
-    <url>/2020/06/12/Java8%E6%96%B0%E7%89%B9%E6%80%A7Optional/</url>
-    <content><![CDATA[<h1 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a>Optional</h1><p><a href="https://www.cnblogs.com/zhangboyu/p/7580262.html" target="_blank" rel="noopener">参考文章</a></p>
-<blockquote>
-<p>主要解决的     空指针异常（NullPointerException） 问题<br>Optional是个容器，可以包含对象T，也可以放null</p>
-<ul>
-<li>本文例子采用 <a href="">Lambda表达式</a>  的写法 </li>
-</ul>
-</blockquote>
-<h2 id="创建Optional实例"><a href="#创建Optional实例" class="headerlink" title="创建Optional实例"></a>创建Optional实例</h2><h2 id="链式调用"><a href="#链式调用" class="headerlink" title="链式调用"></a>链式调用</h2><h2 id="Java9增强"><a href="#Java9增强" class="headerlink" title="Java9增强"></a>Java9增强</h2><blockquote>
-<p>Java 9 为Optional类新增了3个方法：<kbd>or()</kbd> ifpresendOrElse() stream()</p>
-</blockquote>
-]]></content>
-  </entry>
-  <entry>
-    <title>驾考科目三笔记</title>
-    <url>/2020/06/11/%E8%80%83%E9%A9%BE%E7%85%A7/%E7%A7%91%E7%9B%AE%E4%B8%89/</url>
-    <content><![CDATA[<h2 id="灯光的使用"><a href="#灯光的使用" class="headerlink" title="灯光的使用"></a>灯光的使用</h2><ul>
-<li>照明不良或没有照明，使用远光灯</li>
-<li>照明良好，跟车，会车，左右转弯，直行通过路口使用近光灯（夜间直行通过使用近光灯）</li>
-<li>夜间通过，超过，远近光灯交替使用</li>
-<li>路边临时停车，车辆出故障，交通事故，小灯（示廓灯）+双跳（危险警示灯）</li>
-</ul>
-<h2 id="考试步骤"><a href="#考试步骤" class="headerlink" title="考试步骤"></a>考试步骤</h2><ul>
-<li>调座椅 系安全带 打左转灯 回头看 拉手刹（转向灯亮三秒再动） 坡道起步</li>
-<li>15 换二档</li>
-<li>20 换三档</li>
-<li>30 换四档</li>
-<li>40 换五档</li>
-<li>松油门 松刹车 离合踩到底换挡</li>
-<li>转向灯打开3秒后方可变道等等</li>
-<li>转弯踩离合，刹到20换2档，路口点刹转头</li>
-<li>一档不超过50米  二档不超过100米   五档行驶100米</li>
-</ul>
-]]></content>
+    <title>MQ</title>
+    <url>/2020/06/11/MQ/mq/</url>
+    <content><![CDATA[]]></content>
       <categories>
-        <category>驾考</category>
+        <category>技术</category>
       </categories>
       <tags>
-        <tag>其他</tag>
+        <tag>MQ</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>MQ/Untitled</title>
-    <url>/2020/06/11/MQ/Untitled/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>设计模式/工厂模式</title>
-    <url>/2020/06/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>IntelliJ IDEA开荒配置</title>
-    <url>/2020/06/08/IntelliJ%20IDEA%E5%BC%80%E8%8D%92%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h3 id="文件多行显示"><a href="#文件多行显示" class="headerlink" title="文件多行显示"></a>文件多行显示</h3><ul>
-<li><p>File-&gt;Settings-&gt;Editor-&gt;General-&gt;Editor tabs</p>
-</li>
-<li><p>不勾选 show tabs in single row</p>
-<p><img src="http://qbhzsftsb.bkt.clouddn.com/image-20200608170244716.png" alt="image-20200608170244716"></p>
-<h3 id="显示占用内存"><a href="#显示占用内存" class="headerlink" title="显示占用内存"></a>显示占用内存</h3></li>
-<li><p>File-&gt;Settings-&gt;Appearance &amp; Behavior-&gt;Appearance</p>
-</li>
-<li><p>勾选 Show memory indicator</p>
-</li>
-</ul>
-<p><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608170608.png" alt="苏宁豆芽图片20200608170608"></p>
-]]></content>
   </entry>
   <entry>
     <title>IntlliJ IDEA开荒配置</title>
@@ -227,11 +227,6 @@
       </tags>
   </entry>
   <entry>
-    <title>IntelliJ IDEA快捷键-windows默认</title>
-    <url>/2020/06/08/IntelliJ%20IDEA%E5%BF%AB%E6%8D%B7%E9%94%AE-windows%E9%BB%98%E8%AE%A4/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>IntlliJ IDEA快捷键-windows默认</title>
     <url>/2020/06/08/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%AF%87/IntelliJ%20IDEA%E5%BF%AB%E6%8D%B7%E9%94%AE-windows%E9%BB%98%E8%AE%A4/</url>
     <content><![CDATA[]]></content>
@@ -241,15 +236,6 @@
       <tags>
         <tag>IntelliJ IDEA</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>IntelliJ IDEA插件</title>
-    <url>/2020/06/08/IntelliJ%20IDEA%E6%8F%92%E4%BB%B6/</url>
-    <content><![CDATA[<h2 id="Key-Promoter-X"><a href="#Key-Promoter-X" class="headerlink" title="Key Promoter X"></a>Key Promoter X</h2><p>快捷键使用提示<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608153207.png" alt="提示内容"></p>
-<h2 id="Lombok"><a href="#Lombok" class="headerlink" title="Lombok"></a>Lombok</h2><p>自动生成getter/setter/toString方法，entity中不需要再写了</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ActivityEntity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Rainbow-Brackets"><a href="#Rainbow-Brackets" class="headerlink" title="Rainbow Brackets"></a>Rainbow Brackets</h2><p>彩虹括号<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608153459.png" alt="样式展示"></p>
-]]></content>
   </entry>
   <entry>
     <title>IntlliJ IDEA 插件</title>
@@ -300,7 +286,6 @@
       </categories>
       <tags>
         <tag>next配置</tag>
-        <tag>next_日志</tag>
       </tags>
   </entry>
   <entry>
@@ -317,7 +302,6 @@
       </categories>
       <tags>
         <tag>next配置</tag>
-        <tag>next_分页</tag>
       </tags>
   </entry>
   <entry>
@@ -344,8 +328,6 @@
       </categories>
       <tags>
         <tag>next配置</tag>
-        <tag>next_tags</tag>
-        <tag>next_categories</tag>
       </tags>
   </entry>
   <entry>
@@ -383,10 +365,11 @@
 </ul>
 ]]></content>
       <categories>
-        <category>redis</category>
+        <category>技术</category>
       </categories>
       <tags>
         <tag>redis</tag>
+        <tag>redis安装</tag>
       </tags>
   </entry>
 </search>
