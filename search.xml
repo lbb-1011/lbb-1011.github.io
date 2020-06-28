@@ -1,6 +1,259 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Java学习技术栈</title>
+    <url>/2020/06/21/Java%E5%AD%A6%E4%B9%A0%E6%8A%80%E6%9C%AF%E6%A0%88/</url>
+    <content><![CDATA[<p>技术落后</p>
+<ul>
+<li>公司技术框架落后，工作主要是CRUD，没有机会接触底层技术<br>想去大厂</li>
+<li>大厂技术栈</li>
+</ul>
+<hr>
+<ul>
+<li>分布式架构</li>
+<li>分布式消息中间件</li>
+<li>rabbitmq</li>
+<li>kafka</li>
+<li>分布式存储中间件</li>
+<li>Redis</li>
+<li>MongoDB</li>
+<li>fastDFS</li>
+<li>Elasticsearch</li>
+<li>分布式框架</li>
+<li>DUBBO</li>
+<li>zookeeper</li>
+<li>netty</li>
+<li></li>
+</ul>
+<hr>
+<ul>
+<li>微服务架构</li>
+<li>源码分析</li>
+<li>并发编程</li>
+<li>性能优化</li>
+<li>数据结构与算法</li>
+<li>高并发实战项目经验</li>
+<li>工程化协作</li>
+</ul>
+<p>掌握的技术与工作年限严重不匹配<br>Java技术栈太多，不知道学哪些，没人指导</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>mysql索引剖析</title>
+    <url>/2020/06/28/mysql%E7%B4%A2%E5%BC%95/</url>
+    <content><![CDATA[<h1 id="学习工具"><a href="#学习工具" class="headerlink" title="学习工具"></a>学习工具</h1><p><a href="https://www.cs.usfca.edu/~galles/visualization/Algorithms.html" target="_blank" rel="noopener">https://www.cs.usfca.edu/~galles/visualization/Algorithms.html</a></p>
+<h2 id="索引的本质"><a href="#索引的本质" class="headerlink" title="索引的本质"></a>索引的本质</h2><blockquote>
+<p>帮助<code>MySQL</code>高效获取数据的排好序的数据结构</p>
+<ul>
+<li>不加索引时：<blockquote>
+<p>查询需要根据条件去表中逐行匹配，扫描全表<br>数据存储在磁盘不同位置，扫描一次发生一次I/O</p>
+</blockquote>
+</li>
+<li>加索引时<blockquote>
+<p>先查找索引<br>再去对应的位置</p>
+</blockquote>
+</li>
+</ul>
+<p>如下图所以，要查询89，未加索引时需要查询6次才能匹配到，索引2次就可以<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200620143217.png" alt="suoyinshili"></p>
+</blockquote>
+<h2 id="索引数据结构"><a href="#索引数据结构" class="headerlink" title="索引数据结构"></a>索引数据结构</h2><ul>
+<li>二叉树</li>
+<li>红黑树（二叉平衡树）</li>
+<li>Hash表</li>
+<li>B-Tree<h3 id="二叉树（Binary-Search-Tree）"><a href="#二叉树（Binary-Search-Tree）" class="headerlink" title="二叉树（Binary Search Tree）"></a>二叉树（Binary Search Tree）</h3><blockquote>
+<p>树中节点数不多于2的树，左侧子节点小于父节点，右侧子节点大于父节点<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200620151221.png" alt="erchahsulizi"></p>
+<ul>
+<li>缺点：当数据是自增的情况，容易变成单边二叉树，退化成链表的结构<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200620151905.png" alt="erchahsulizi"></li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h3 id="红黑树（二叉平衡树）（Red-Black-Tree）"><a href="#红黑树（二叉平衡树）（Red-Black-Tree）" class="headerlink" title="红黑树（二叉平衡树）（Red/Black Tree）"></a>红黑树（二叉平衡树）（Red/Black Tree）</h3><blockquote>
+<p>特殊的二叉树，对二叉树进行了优化<br>按顺序输入1011  1012  1013的时候，节点发生自旋<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200620153434.png" alt="hongheishu"></p>
+<ul>
+<li>缺点：当数据量太大的话，树的层级太高，效率依然很低</li>
+</ul>
+</blockquote>
+<h3 id="B-Tree"><a href="#B-Tree" class="headerlink" title="B Tree"></a>B Tree</h3><h4 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h4><blockquote>
+<ul>
+<li>平衡的多叉树</li>
+<li>根节点至少有两个叶子节点， 所有叶子节点具有相同的深度，叶子节点直接没有指针</li>
+<li>所有的索引元素不重复，节点中数据索引从左到右递增排列</li>
+</ul>
+</blockquote>
+<p> <img src="http://qbhzsftsb.bkt.clouddn.com/bjiashu.png" alt="bshu存储"></p>
+<h4 id="查找过程："><a href="#查找过程：" class="headerlink" title="查找过程："></a>查找过程：</h4><blockquote>
+<ul>
+<li>把第一层节点加载到内存（ram）查找</li>
+<li>没有的话，按照索引的大小找到第二层的节点</li>
+<li>把第二层节点加载到内存，一次类推</li>
+</ul>
+</blockquote>
+<p>不能把所有的数据都放到同一层</p>
+<ul>
+<li>内存放不下</li>
+<li>mysql对单节点大小的限制 16384字节<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SHOW GLOBAL STATUS LIKE &#39;innodb_page_size&#39;;</span><br></pre></td></tr></table></figure>
+<h2 id="B-Tree-1"><a href="#B-Tree-1" class="headerlink" title="B+ Tree"></a>B<sup>+</sup> Tree</h2><h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3></li>
+<li>非叶子节点不存储data</li>
+</ul>
+<p> <img src="http://qbhzsftsb.bkt.clouddn.com/myisam.png" alt="myisam索引"><br>myisam</p>
+<hr>
+<p>mysql 引擎<br>MYISAM<br>InnoDB<br>hash</p>
+<p>SQL优化</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+        <tag>数据库</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java8新特性Optional</title>
+    <url>/2020/06/18/Java8%E6%96%B0%E7%89%B9%E6%80%A7Optional/</url>
+    <content><![CDATA[<h1 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a>Optional</h1><p><a href="https://www.cnblogs.com/zhangboyu/p/7580262.html" target="_blank" rel="noopener">参考文章</a></p>
+<blockquote>
+<p>主要解决的     空指针异常（NullPointerException） 问题<br>Optional是个容器，可以包含对象T，也可以放null</p>
+<ul>
+<li>本文例子采用 <a href="">Lambda表达式</a>  的写法 </li>
+</ul>
+</blockquote>
+<h2 id="创建Optional实例"><a href="#创建Optional实例" class="headerlink" title="创建Optional实例"></a>创建Optional实例</h2><h2 id="链式调用"><a href="#链式调用" class="headerlink" title="链式调用"></a>链式调用</h2><h2 id="Java9增强"><a href="#Java9增强" class="headerlink" title="Java9增强"></a>Java9增强</h2><blockquote>
+<p>Java 9 为Optional类新增了3个方法：<kbd>or()</kbd> ifpresendOrElse() stream()</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>java基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>免费超高清照片素材站</title>
+    <url>/2020/06/18/%E5%A3%81%E7%BA%B8%E7%BD%91%E7%AB%99/</url>
+    <content><![CDATA[<h2 id="免费超高清照片素材站"><a href="#免费超高清照片素材站" class="headerlink" title="免费超高清照片素材站"></a>免费超高清照片素材站</h2><p>照片素材一般用于制作网页背景、宣传海报、banner或 是写博客文章的时候比较常用。</p>
+<p><img src="https://img.liaosam.com/uploads/2016/06/89.jpg" alt="89"></p>
+<hr>
+<p><a href="https://unsplash.com/" target="_blank" rel="noopener">https://unsplash.com/</a><br>收藏多年的免费超高清图片素材网站，每张图片都特别唯美，料网很多文章图片也来自于此站。该网站的图片没有任何版权问题，你可以放心使用。Unsplash 是一个真正免费高质量照片的网站，主打风景图片，照片分辨率也很大，用来做网页素材已经足够，该照片网站每10天更新10张照片。<code>如果打开慢，请自行FQ。</code></p>
+<p><a href="https://www.gratisography.com/" target="_blank" rel="noopener">https://www.gratisography.com/</a><br>每周定期发布一些高品质的免费照片，数量没有 Unsplash 多，每周更新，以后也会越来越多。</p>
+<p><a href="https://stocksnap.io/" target="_blank" rel="noopener">https://stocksnap.io/</a><br>好站不用多解释。</p>
+<p><a href="https://picography.co/" target="_blank" rel="noopener">https://picography.co/</a><br>和 unsplash 一样，都是心头爱之一。</p>
+<p><a href="https://abduzeedo.com/" target="_blank" rel="noopener">https://abduzeedo.com/</a><br>每日创意灵感分享</p>
+<hr>
+<p><a href="https://www.pexels.com/" target="_blank" rel="noopener">https://www.pexels.com/</a><br>pexels free stock photos。支持按颜色找照片。</p>
+<p><a href="https://www.designerspics.com/" target="_blank" rel="noopener">https://www.designerspics.com/</a><br>可作为设计素材的照片</p>
+<p><a href="https://foter.com/" target="_blank" rel="noopener">https://foter.com/</a><br>海量免费高清图片</p>
+<p><a href="https://pixabay.com/en/editors_choice/" target="_blank" rel="noopener">https://pixabay.com/en/editors_choice/</a><br>Pixabay，几十万张免费无版权限制的照片、背景图片、矢量文件和艺术插图</p>
+<hr>
+<p><a href="https://raumrot.com/" target="_blank" rel="noopener">https://raumrot.com/</a><br>图库质量不错</p>
+<p><a href="https://morguefile.com/" target="_blank" rel="noopener">https://morguefile.com/</a><br>跟上面站都差不多类型的。免费下载。</p>
+<p><a href="https://wefunction.com/" target="_blank" rel="noopener">https://wefunction.com/</a><br>免费高清照片，网页图标，图片素材等</p>
+<p><a href="https://picjumbo.com/" target="_blank" rel="noopener">https://picjumbo.com/</a><br>分免费个人使用和商业使用，图片质量不错</p>
+<p><img src="https://img.liaosam.com/uploads/2016/06/70.jpg" alt="70"></p>
+<hr>
+<p>上面发的都是免费的，还有几个不错的付费站：</p>
+<p><a href="https://500px.com/" target="_blank" rel="noopener">https://500px.com/</a><br>国外高质量摄影照片网站（付费）</p>
+<p><a href="https://www.istockphoto.com/" target="_blank" rel="noopener">https://www.istockphoto.com/</a><br>同上类似（付费）</p>
+<p><a href="https://www.dreamstime.com/" target="_blank" rel="noopener">https://www.dreamstime.com/</a><br>同上类似（付费）</p>
+<hr>
+<h2 id="特色免费高清图片站"><a href="#特色免费高清图片站" class="headerlink" title="特色免费高清图片站"></a>特色免费高清图片站</h2><p><a href="https://magdeleine.co/" target="_blank" rel="noopener">https://magdeleine.co/</a><br>如果说 Unsplash 是主打风景，Magdeleine 则主打黑白图片，但也有别的颜色。而且有一个特色功能，它可以按照你选择的颜色或者你的情绪，帮你寻找图片。</p>
+<p><a href="https://foodiesfeed.com/" target="_blank" rel="noopener">https://foodiesfeed.com/</a><br>网站主打美食高清图，看着流口水，根本没办法减肥。</p>
+<p><a href="https://www.textures.com/" target="_blank" rel="noopener">https://www.textures.com/</a><br>国外超全的各种材质纹理的背景图</p>
+<hr>
+<h2 id="设计图片素材站（有些要付费）"><a href="#设计图片素材站（有些要付费）" class="headerlink" title="设计图片素材站（有些要付费）"></a>设计图片素材站（有些要付费）</h2><p><a href="https://www.shutterstock.com/" target="_blank" rel="noopener">https://www.shutterstock.com/</a><br>国外高清设计图库。</p>
+<p><a href="https://www.pixelsquid.com/" target="_blank" rel="noopener">https://www.pixelsquid.com/</a><br>去背景的3D图片素材</p>
+<p><a href="https://dribbble.com/" target="_blank" rel="noopener">https://dribbble.com/</a><br>设计师们的最爱，看过没有不说好的</p>
+<p><a href="https://www.canva.com/" target="_blank" rel="noopener">https://www.canva.com/</a><br>超屌的图片设计素材站。浏览器太落后的可能访问不了。用谷歌账号登入，可以在线设计矢量图等。适合有一定美工功底或喜欢折腾的人。</p>
+<p><img src="https://img.liaosam.com/uploads/2016/06/85.jpg" alt="85"></p>
+<hr>
+<h2 id="来几个国内的："><a href="#来几个国内的：" class="headerlink" title="来几个国内的："></a>来几个国内的：</h2><p><a href="https://www.zcool.com.cn/gfxs/" target="_blank" rel="noopener">https://www.zcool.com.cn/gfxs/</a><br>站酷</p>
+<p><a href="https://www.quanjing.com/" target="_blank" rel="noopener">https://www.quanjing.com/</a><br>全景图库。国内人气较高的版权图库</p>
+<p><a href="https://huaban.com/" target="_blank" rel="noopener">https://huaban.com</a><br>花瓣</p>
+<p><a href="https://creative.vcg.com/" target="_blank" rel="noopener">https://creative.vcg.com/</a><br>视觉中国。刚收购了 CorbisImages（比尔盖茨创建的视觉创意内容机构）</p>
+<p><a href="https://www.sccnn.com/" target="_blank" rel="noopener">https://www.sccnn.com/</a><br>素材中国</p>
+<p><a href="https://www.lanrentuku.com/" target="_blank" rel="noopener">https://www.lanrentuku.com/</a><br>懒人图库  不只是图片，很多网页特效的 JS 源码</p>
+<p><a href="https://www.nipic.com/" target="_blank" rel="noopener">https://www.nipic.com/</a><br>昵图网，这个不用多介绍了。图片大排档。。</p>
+<h2 id="壁纸站"><a href="#壁纸站" class="headerlink" title="壁纸站"></a>壁纸站</h2><p><a href="https://zoomwalls.com/" target="_blank" rel="noopener">https://zoomwalls.com/</a>   </p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo常用操作</title>
+    <url>/2020/06/06/hexo/hexo/</url>
+    <content><![CDATA[<p>参考文章<a href="https://www.jianshu.com/p/dfcae367aae6" target="_blank" rel="noopener">Mac下基于github的hexo博客搭建及常用功能添加</a></p>
+<p>进入hexo项目下<br>本地启动</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>或者缩写</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
+<p>配置部署文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: https:&#x2F;&#x2F;github.com&#x2F;lbb-1011&#x2F;lbb-1011.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+<p>上传到github<br>退出保存_config.yml文件后，重新回到hexo的根目录下，再使用如下命令就可以完成部署了：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>也可以使用命令的简写：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<h1 id="coding部署"><a href="#coding部署" class="headerlink" title="coding部署"></a>coding部署</h1><p><a href="https://lbb-1011.coding.net/" target="_blank" rel="noopener">https://lbb-1011.coding.net/</a></p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>MQ</title>
+    <url>/2020/06/11/MQ/mq/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>MQ</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>npm执行报错</title>
+    <url>/2020/06/14/Mac%20OS/npm/</url>
+    <content><![CDATA[<p>执行npm出现如下问题</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gyp: No Xcode or CLT version detected!</span><br><span class="line">	gyp ERR! configure error </span><br><span class="line">	gyp ERR! stack Error: &#96;gyp&#96; failed with exit code: 1</span><br><span class="line">	gyp ERR! stack     at ChildProcess.onCpExit (&#x2F;usr&#x2F;local&#x2F;lib&#x2F;node_modules&#x2F;npm&#x2F;node_modules&#x2F;node-gyp&#x2F;lib&#x2F;configure.js:351:16)</span><br><span class="line">	gyp ERR! stack     at ChildProcess.emit (events.js:315:20)</span><br><span class="line">	gyp ERR! stack     at Process.ChildProcess._handle.onexit (internal&#x2F;child_process.js:275:12)</span><br><span class="line">	gyp ERR! System Darwin 19.5.0</span><br><span class="line">	gyp ERR! command &quot;&#x2F;usr&#x2F;local&#x2F;bin&#x2F;node&quot; &quot;&#x2F;usr&#x2F;local&#x2F;lib&#x2F;node_modules&#x2F;npm&#x2F;node_modules&#x2F;node-gyp&#x2F;bin&#x2F;node-gyp.js&quot; &quot;rebuild&quot;</span><br><span class="line">	gyp ERR! cwd &#x2F;Users&#x2F;liubeibei&#x2F;hexo&#x2F;blog&#x2F;node_modules&#x2F;hexo-helper-live2d&#x2F;node_modules&#x2F;fsevents</span><br><span class="line">	gyp ERR! node -v v12.18.0</span><br><span class="line">	gyp ERR! node-gyp -v v5.1.0</span><br><span class="line">	gyp ERR! not ok</span><br></pre></td></tr></table></figure>
+
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="1-尝试用如下命令进行修复"><a href="#1-尝试用如下命令进行修复" class="headerlink" title="1. 尝试用如下命令进行修复"></a>1. 尝试用如下命令进行修复</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ xcode-select --install</span><br></pre></td></tr></table></figure>
+
+<p>系统提示如下信息：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xcode-select: error: <span class="built_in">command</span> line tools are already installed, use <span class="string">"Software Update"</span> to install updates</span><br></pre></td></tr></table></figure>
+
+<p>而事实上并没有所谓的”Software Update”可以更新</p>
+<h3 id="2-正确姿势"><a href="#2-正确姿势" class="headerlink" title="2. 正确姿势"></a>2. 正确姿势</h3><p>一筹莫展之际，找到如下解决方案：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo rm -rf $(xcode-select -<span class="built_in">print</span>-path)</span><br><span class="line">$ xcode-select --install</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>next</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>next分页显示有问题</title>
+    <url>/2020/06/06/hexo/next%E5%88%86%E9%A1%B5/</url>
+    <content><![CDATA[<p>错误显示<br><img src="http://qbhzsftsb.bkt.clouddn.com/WX20200606-172116%402x.png" alt="image-20200606170555849"><br>修改代码 themes\next\layout_partials\pagination.swig<br>原来的代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if page.prev or page.next %&#125;</span><br><span class="line">  &lt;nav class&#x3D;&quot;pagination&quot;&gt;</span><br><span class="line">    &#123;&#123;</span><br><span class="line">      paginator(&#123;</span><br><span class="line">        prev_text: &#39;&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;&#39;,</span><br><span class="line">        next_text: &#39;&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;&#39;,</span><br><span class="line">        mid_size: 1</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;&#125;</span><br><span class="line">  &lt;&#x2F;nav&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+<p>修改为</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if page.prev or page.next %&#125;</span><br><span class="line">  &lt;nav class&#x3D;&quot;pagination&quot;&gt;</span><br><span class="line">    &#123;&#123;</span><br><span class="line">      paginator(&#123;</span><br><span class="line">        prev_text: &#39;&lt;&#39;,</span><br><span class="line">        next_text: &#39;&gt;&#39;,</span><br><span class="line">        mid_size: 1</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;&#125;</span><br><span class="line">  &lt;&#x2F;nav&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>hexo_next</category>
+      </categories>
+      <tags>
+        <tag>next配置</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>next常见配置功能插件</title>
     <url>/2020/06/12/hexo/next%E5%8A%9F%E8%83%BD-%E5%BE%85%E5%AE%8C%E5%96%84/</url>
     <content><![CDATA[<h3 id="评论功能"><a href="#评论功能" class="headerlink" title="评论功能"></a>评论功能</h3><blockquote>
@@ -76,308 +329,12 @@ Valine-Admin 的实现<blockquote>
       </tags>
   </entry>
   <entry>
-    <title>将输入的num，用最少的数字2次幂之和进行表示</title>
-    <url>/2020/06/28/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95001/</url>
-    <content><![CDATA[<p>将输入的num，用最少的数字2次幂之和进行表示</p>
-<blockquote>
-<p>示例<br>输入 n = 11<br>输出：3；<br>解释：11=9+1+1；9为3的2次幂，1为1的2次幂；所以最少需要3个数字的2次幂；</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="comment">//二分法查找最大整数平方根</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">mySqrt</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> r = x;</span><br><span class="line">        <span class="keyword">int</span> ans = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (l &lt;= r) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = l + (r - l) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> ((<span class="keyword">long</span>) mid * mid &lt;= x) &#123;</span><br><span class="line">                ans = mid;</span><br><span class="line">                l = mid + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                r = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">nums</span><span class="params">(<span class="keyword">int</span> nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l = nums;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (l &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> res = mySqrt(l);</span><br><span class="line">            l = l - res * res;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Test test = <span class="keyword">new</span> Test();</span><br><span class="line">        System.out.println(test.nums(<span class="number">11</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java学习技术栈</title>
-    <url>/2020/06/21/Java%E5%AD%A6%E4%B9%A0%E6%8A%80%E6%9C%AF%E6%A0%88/</url>
-    <content><![CDATA[<p>技术落后</p>
-<ul>
-<li>公司技术框架落后，工作主要是CRUD，没有机会接触底层技术<br>想去大厂</li>
-<li>大厂技术栈</li>
-</ul>
-<hr>
-<ul>
-<li>分布式架构</li>
-<li>分布式消息中间件</li>
-<li>rabbitmq</li>
-<li>kafka</li>
-<li>分布式存储中间件</li>
-<li>Redis</li>
-<li>MongoDB</li>
-<li>fastDFS</li>
-<li>Elasticsearch</li>
-<li>分布式框架</li>
-<li>DUBBO</li>
-<li>zookeeper</li>
-<li>netty</li>
-<li></li>
-</ul>
-<hr>
-<ul>
-<li>微服务架构</li>
-<li>源码分析</li>
-<li>并发编程</li>
-<li>性能优化</li>
-<li>数据结构与算法</li>
-<li>高并发实战项目经验</li>
-<li>工程化协作</li>
-</ul>
-<p>掌握的技术与工作年限严重不匹配<br>Java技术栈太多，不知道学哪些，没人指导</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>免费超高清照片素材站</title>
-    <url>/2020/06/18/%E5%A3%81%E7%BA%B8%E7%BD%91%E7%AB%99/</url>
-    <content><![CDATA[<h2 id="免费超高清照片素材站"><a href="#免费超高清照片素材站" class="headerlink" title="免费超高清照片素材站"></a>免费超高清照片素材站</h2><p>照片素材一般用于制作网页背景、宣传海报、banner或 是写博客文章的时候比较常用。</p>
-<p><img src="https://img.liaosam.com/uploads/2016/06/89.jpg" alt="89"></p>
-<hr>
-<p><a href="https://unsplash.com/" target="_blank" rel="noopener">https://unsplash.com/</a><br>收藏多年的免费超高清图片素材网站，每张图片都特别唯美，料网很多文章图片也来自于此站。该网站的图片没有任何版权问题，你可以放心使用。Unsplash 是一个真正免费高质量照片的网站，主打风景图片，照片分辨率也很大，用来做网页素材已经足够，该照片网站每10天更新10张照片。<code>如果打开慢，请自行FQ。</code></p>
-<p><a href="https://www.gratisography.com/" target="_blank" rel="noopener">https://www.gratisography.com/</a><br>每周定期发布一些高品质的免费照片，数量没有 Unsplash 多，每周更新，以后也会越来越多。</p>
-<p><a href="https://stocksnap.io/" target="_blank" rel="noopener">https://stocksnap.io/</a><br>好站不用多解释。</p>
-<p><a href="https://picography.co/" target="_blank" rel="noopener">https://picography.co/</a><br>和 unsplash 一样，都是心头爱之一。</p>
-<p><a href="https://abduzeedo.com/" target="_blank" rel="noopener">https://abduzeedo.com/</a><br>每日创意灵感分享</p>
-<hr>
-<p><a href="https://www.pexels.com/" target="_blank" rel="noopener">https://www.pexels.com/</a><br>pexels free stock photos。支持按颜色找照片。</p>
-<p><a href="https://www.designerspics.com/" target="_blank" rel="noopener">https://www.designerspics.com/</a><br>可作为设计素材的照片</p>
-<p><a href="https://foter.com/" target="_blank" rel="noopener">https://foter.com/</a><br>海量免费高清图片</p>
-<p><a href="https://pixabay.com/en/editors_choice/" target="_blank" rel="noopener">https://pixabay.com/en/editors_choice/</a><br>Pixabay，几十万张免费无版权限制的照片、背景图片、矢量文件和艺术插图</p>
-<hr>
-<p><a href="https://raumrot.com/" target="_blank" rel="noopener">https://raumrot.com/</a><br>图库质量不错</p>
-<p><a href="https://morguefile.com/" target="_blank" rel="noopener">https://morguefile.com/</a><br>跟上面站都差不多类型的。免费下载。</p>
-<p><a href="https://wefunction.com/" target="_blank" rel="noopener">https://wefunction.com/</a><br>免费高清照片，网页图标，图片素材等</p>
-<p><a href="https://picjumbo.com/" target="_blank" rel="noopener">https://picjumbo.com/</a><br>分免费个人使用和商业使用，图片质量不错</p>
-<p><img src="https://img.liaosam.com/uploads/2016/06/70.jpg" alt="70"></p>
-<hr>
-<p>上面发的都是免费的，还有几个不错的付费站：</p>
-<p><a href="https://500px.com/" target="_blank" rel="noopener">https://500px.com/</a><br>国外高质量摄影照片网站（付费）</p>
-<p><a href="https://www.istockphoto.com/" target="_blank" rel="noopener">https://www.istockphoto.com/</a><br>同上类似（付费）</p>
-<p><a href="https://www.dreamstime.com/" target="_blank" rel="noopener">https://www.dreamstime.com/</a><br>同上类似（付费）</p>
-<hr>
-<h2 id="特色免费高清图片站"><a href="#特色免费高清图片站" class="headerlink" title="特色免费高清图片站"></a>特色免费高清图片站</h2><p><a href="https://magdeleine.co/" target="_blank" rel="noopener">https://magdeleine.co/</a><br>如果说 Unsplash 是主打风景，Magdeleine 则主打黑白图片，但也有别的颜色。而且有一个特色功能，它可以按照你选择的颜色或者你的情绪，帮你寻找图片。</p>
-<p><a href="https://foodiesfeed.com/" target="_blank" rel="noopener">https://foodiesfeed.com/</a><br>网站主打美食高清图，看着流口水，根本没办法减肥。</p>
-<p><a href="https://www.textures.com/" target="_blank" rel="noopener">https://www.textures.com/</a><br>国外超全的各种材质纹理的背景图</p>
-<hr>
-<h2 id="设计图片素材站（有些要付费）"><a href="#设计图片素材站（有些要付费）" class="headerlink" title="设计图片素材站（有些要付费）"></a>设计图片素材站（有些要付费）</h2><p><a href="https://www.shutterstock.com/" target="_blank" rel="noopener">https://www.shutterstock.com/</a><br>国外高清设计图库。</p>
-<p><a href="https://www.pixelsquid.com/" target="_blank" rel="noopener">https://www.pixelsquid.com/</a><br>去背景的3D图片素材</p>
-<p><a href="https://dribbble.com/" target="_blank" rel="noopener">https://dribbble.com/</a><br>设计师们的最爱，看过没有不说好的</p>
-<p><a href="https://www.canva.com/" target="_blank" rel="noopener">https://www.canva.com/</a><br>超屌的图片设计素材站。浏览器太落后的可能访问不了。用谷歌账号登入，可以在线设计矢量图等。适合有一定美工功底或喜欢折腾的人。</p>
-<p><img src="https://img.liaosam.com/uploads/2016/06/85.jpg" alt="85"></p>
-<hr>
-<h2 id="来几个国内的："><a href="#来几个国内的：" class="headerlink" title="来几个国内的："></a>来几个国内的：</h2><p><a href="https://www.zcool.com.cn/gfxs/" target="_blank" rel="noopener">https://www.zcool.com.cn/gfxs/</a><br>站酷</p>
-<p><a href="https://www.quanjing.com/" target="_blank" rel="noopener">https://www.quanjing.com/</a><br>全景图库。国内人气较高的版权图库</p>
-<p><a href="https://huaban.com/" target="_blank" rel="noopener">https://huaban.com</a><br>花瓣</p>
-<p><a href="https://creative.vcg.com/" target="_blank" rel="noopener">https://creative.vcg.com/</a><br>视觉中国。刚收购了 CorbisImages（比尔盖茨创建的视觉创意内容机构）</p>
-<p><a href="https://www.sccnn.com/" target="_blank" rel="noopener">https://www.sccnn.com/</a><br>素材中国</p>
-<p><a href="https://www.lanrentuku.com/" target="_blank" rel="noopener">https://www.lanrentuku.com/</a><br>懒人图库  不只是图片，很多网页特效的 JS 源码</p>
-<p><a href="https://www.nipic.com/" target="_blank" rel="noopener">https://www.nipic.com/</a><br>昵图网，这个不用多介绍了。图片大排档。。</p>
-<h2 id="壁纸站"><a href="#壁纸站" class="headerlink" title="壁纸站"></a>壁纸站</h2><p><a href="https://zoomwalls.com/" target="_blank" rel="noopener">https://zoomwalls.com/</a>   </p>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>责任链模式</title>
-    <url>/2020/06/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>工厂模式</title>
-    <url>/2020/06/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java8新特性Optional</title>
-    <url>/2020/06/18/Java8%E6%96%B0%E7%89%B9%E6%80%A7Optional/</url>
-    <content><![CDATA[<h1 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a>Optional</h1><p><a href="https://www.cnblogs.com/zhangboyu/p/7580262.html" target="_blank" rel="noopener">参考文章</a></p>
-<blockquote>
-<p>主要解决的     空指针异常（NullPointerException） 问题<br>Optional是个容器，可以包含对象T，也可以放null</p>
-<ul>
-<li>本文例子采用 <a href="">Lambda表达式</a>  的写法 </li>
-</ul>
-</blockquote>
-<h2 id="创建Optional实例"><a href="#创建Optional实例" class="headerlink" title="创建Optional实例"></a>创建Optional实例</h2><h2 id="链式调用"><a href="#链式调用" class="headerlink" title="链式调用"></a>链式调用</h2><h2 id="Java9增强"><a href="#Java9增强" class="headerlink" title="Java9增强"></a>Java9增强</h2><blockquote>
-<p>Java 9 为Optional类新增了3个方法：<kbd>or()</kbd> ifpresendOrElse() stream()</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>java基础</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>npm执行报错</title>
-    <url>/2020/06/14/Mac%20OS/npm/</url>
-    <content><![CDATA[<p>执行npm出现如下问题</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gyp: No Xcode or CLT version detected!</span><br><span class="line">	gyp ERR! configure error </span><br><span class="line">	gyp ERR! stack Error: &#96;gyp&#96; failed with exit code: 1</span><br><span class="line">	gyp ERR! stack     at ChildProcess.onCpExit (&#x2F;usr&#x2F;local&#x2F;lib&#x2F;node_modules&#x2F;npm&#x2F;node_modules&#x2F;node-gyp&#x2F;lib&#x2F;configure.js:351:16)</span><br><span class="line">	gyp ERR! stack     at ChildProcess.emit (events.js:315:20)</span><br><span class="line">	gyp ERR! stack     at Process.ChildProcess._handle.onexit (internal&#x2F;child_process.js:275:12)</span><br><span class="line">	gyp ERR! System Darwin 19.5.0</span><br><span class="line">	gyp ERR! command &quot;&#x2F;usr&#x2F;local&#x2F;bin&#x2F;node&quot; &quot;&#x2F;usr&#x2F;local&#x2F;lib&#x2F;node_modules&#x2F;npm&#x2F;node_modules&#x2F;node-gyp&#x2F;bin&#x2F;node-gyp.js&quot; &quot;rebuild&quot;</span><br><span class="line">	gyp ERR! cwd &#x2F;Users&#x2F;liubeibei&#x2F;hexo&#x2F;blog&#x2F;node_modules&#x2F;hexo-helper-live2d&#x2F;node_modules&#x2F;fsevents</span><br><span class="line">	gyp ERR! node -v v12.18.0</span><br><span class="line">	gyp ERR! node-gyp -v v5.1.0</span><br><span class="line">	gyp ERR! not ok</span><br></pre></td></tr></table></figure>
-
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="1-尝试用如下命令进行修复"><a href="#1-尝试用如下命令进行修复" class="headerlink" title="1. 尝试用如下命令进行修复"></a>1. 尝试用如下命令进行修复</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ xcode-select --install</span><br></pre></td></tr></table></figure>
-
-<p>系统提示如下信息：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xcode-select: error: <span class="built_in">command</span> line tools are already installed, use <span class="string">"Software Update"</span> to install updates</span><br></pre></td></tr></table></figure>
-
-<p>而事实上并没有所谓的”Software Update”可以更新</p>
-<h3 id="2-正确姿势"><a href="#2-正确姿势" class="headerlink" title="2. 正确姿势"></a>2. 正确姿势</h3><p>一筹莫展之际，找到如下解决方案：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo rm -rf $(xcode-select -<span class="built_in">print</span>-path)</span><br><span class="line">$ xcode-select --install</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>next</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>驾考科目三笔记</title>
-    <url>/2020/06/11/%E8%80%83%E9%A9%BE%E7%85%A7/%E7%A7%91%E7%9B%AE%E4%B8%89/</url>
-    <content><![CDATA[<h2 id="灯光的使用"><a href="#灯光的使用" class="headerlink" title="灯光的使用"></a>灯光的使用</h2><ul>
-<li>照明不良或没有照明，使用远光灯</li>
-<li>照明良好，跟车，会车，左右转弯，直行通过路口使用近光灯（夜间直行通过使用近光灯）</li>
-<li>夜间通过，超过，远近光灯交替使用</li>
-<li>路边临时停车，车辆出故障，交通事故，小灯（示廓灯）+双跳（危险警示灯）</li>
-</ul>
-<h2 id="考试步骤"><a href="#考试步骤" class="headerlink" title="考试步骤"></a>考试步骤</h2><ul>
-<li>调座椅 系安全带 打左转灯 回头看 拉手刹（转向灯亮三秒再动） 坡道起步</li>
-<li>15 换二档</li>
-<li>20 换三档</li>
-<li>30 换四档</li>
-<li>40 换五档</li>
-<li>松油门 松刹车 离合踩到底换挡</li>
-<li>转向灯打开3秒后方可变道等等</li>
-<li>转弯踩离合，刹到20换2档，路口点刹转头</li>
-<li>一档不超过50米  二档不超过100米   五档行驶100米</li>
-</ul>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MQ</title>
-    <url>/2020/06/11/MQ/mq/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>MQ</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>IntlliJ IDEA开荒配置</title>
-    <url>/2020/06/08/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%AF%87/IntelliJ%20IDEA%E5%BC%80%E8%8D%92%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h3 id="文件多行显示"><a href="#文件多行显示" class="headerlink" title="文件多行显示"></a>文件多行显示</h3><ul>
-<li><p>File-&gt;Settings-&gt;Editor-&gt;General-&gt;Editor tabs</p>
-</li>
-<li><p>不勾选 show tabs in single row</p>
-<p><img src="http://qbhzsftsb.bkt.clouddn.com/image-20200608170244716.png" alt="image-20200608170244716"></p>
-</li>
-</ul>
-<h3 id="显示占用内存"><a href="#显示占用内存" class="headerlink" title="显示占用内存"></a>显示占用内存</h3><ul>
-<li>File-&gt;Settings-&gt;Appearance &amp; Behavior-&gt;Appearance</li>
-<li>勾选 Show memory indicator</li>
-</ul>
-<p><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608170608.png" alt="苏宁豆芽图片20200608170608"></p>
-]]></content>
-      <categories>
-        <category>开发工具</category>
-      </categories>
-      <tags>
-        <tag>IntelliJ IDEA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>IntlliJ IDEA快捷键-windows默认</title>
-    <url>/2020/06/08/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%AF%87/IntelliJ%20IDEA%E5%BF%AB%E6%8D%B7%E9%94%AE-windows%E9%BB%98%E8%AE%A4/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>开发工具</category>
-      </categories>
-      <tags>
-        <tag>IntelliJ IDEA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>IntlliJ IDEA 插件</title>
-    <url>/2020/06/08/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%AF%87/IntelliJ%20IDEA%E6%8F%92%E4%BB%B6/</url>
-    <content><![CDATA[<h2 id="Key-Promoter-X"><a href="#Key-Promoter-X" class="headerlink" title="Key Promoter X"></a>Key Promoter X</h2><p>快捷键使用提示<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608153207.png" alt="提示内容"></p>
-<h2 id="Lombok"><a href="#Lombok" class="headerlink" title="Lombok"></a>Lombok</h2><p>自动生成getter/setter/toString方法，entity中不需要再写了</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ActivityEntity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Rainbow-Brackets"><a href="#Rainbow-Brackets" class="headerlink" title="Rainbow Brackets"></a>Rainbow Brackets</h2><p>彩虹括号<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608153459.png" alt="样式展示"></p>
-]]></content>
-      <categories>
-        <category>开发工具</category>
-      </categories>
-      <tags>
-        <tag>IntelliJ IDEA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo常用操作</title>
-    <url>/2020/06/06/hexo/hexo/</url>
-    <content><![CDATA[<p>参考文章<a href="https://www.jianshu.com/p/dfcae367aae6" target="_blank" rel="noopener">Mac下基于github的hexo博客搭建及常用功能添加</a></p>
-<p>进入hexo项目下<br>本地启动</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>或者缩写</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
-<p>配置部署文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: https:&#x2F;&#x2F;github.com&#x2F;lbb-1011&#x2F;lbb-1011.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
-<p>上传到github<br>退出保存_config.yml文件后，重新回到hexo的根目录下，再使用如下命令就可以完成部署了：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>也可以使用命令的简写：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<h1 id="coding部署"><a href="#coding部署" class="headerlink" title="coding部署"></a>coding部署</h1><p><a href="https://lbb-1011.coding.net/" target="_blank" rel="noopener">https://lbb-1011.coding.net/</a></p>
-]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-  </entry>
-  <entry>
     <title>next左边栏日志点击有问题</title>
     <url>/2020/06/06/hexo/next%E6%97%A5%E5%BF%97/</url>
     <content><![CDATA[<h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>记录下出现的 问题：日志出现Cannot GET /archives/%7C%7C%20list/问题</p>
 <h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>1，第一种解决办法<br>themes/next/_config.yml 文件下将archives：/archives/ || archive 改成archives：/archives/<br>删掉后面的||archive，的确能够解决问题，但是就没有图标了</p>
 <p>2，第二种解决办法<br>next主题目录下 找到文件/layout/_macro/sidebar.swig<br>修改以下内容（原因是url_for函数将||转码了）</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;a href&#x3D;&quot;&#123;&#123;url_for(theme.menu.archives).split(&#39;||&#39;)[0] | trim &#125;&#125;&quot;&gt; </span><br><span class="line">改成</span><br><span class="line">&lt;a href&#x3D;&quot;&#123;&#123;url_for(theme.menu.archives.split(&#39;||&#39;)[0])| trim&#125;&#125;&quot;&gt;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>hexo_next</category>
-      </categories>
-      <tags>
-        <tag>next配置</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>next分页显示有问题</title>
-    <url>/2020/06/06/hexo/next%E5%88%86%E9%A1%B5/</url>
-    <content><![CDATA[<p>错误显示<br><img src="http://qbhzsftsb.bkt.clouddn.com/WX20200606-172116%402x.png" alt="image-20200606170555849"><br>修改代码 themes\next\layout_partials\pagination.swig<br>原来的代码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if page.prev or page.next %&#125;</span><br><span class="line">  &lt;nav class&#x3D;&quot;pagination&quot;&gt;</span><br><span class="line">    &#123;&#123;</span><br><span class="line">      paginator(&#123;</span><br><span class="line">        prev_text: &#39;&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;&#39;,</span><br><span class="line">        next_text: &#39;&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;&#39;,</span><br><span class="line">        mid_size: 1</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;&#125;</span><br><span class="line">  &lt;&#x2F;nav&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
-<p>修改为</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if page.prev or page.next %&#125;</span><br><span class="line">  &lt;nav class&#x3D;&quot;pagination&quot;&gt;</span><br><span class="line">    &#123;&#123;</span><br><span class="line">      paginator(&#123;</span><br><span class="line">        prev_text: &#39;&lt;&#39;,</span><br><span class="line">        next_text: &#39;&gt;&#39;,</span><br><span class="line">        mid_size: 1</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;&#125;</span><br><span class="line">  &lt;&#x2F;nav&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
-
 ]]></content>
       <categories>
         <category>hexo_next</category>
@@ -452,6 +409,120 @@ Valine-Admin 的实现<blockquote>
       <tags>
         <tag>redis</tag>
         <tag>redis安装</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IntlliJ IDEA开荒配置</title>
+    <url>/2020/06/08/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%AF%87/IntelliJ%20IDEA%E5%BC%80%E8%8D%92%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h3 id="文件多行显示"><a href="#文件多行显示" class="headerlink" title="文件多行显示"></a>文件多行显示</h3><ul>
+<li><p>File-&gt;Settings-&gt;Editor-&gt;General-&gt;Editor tabs</p>
+</li>
+<li><p>不勾选 show tabs in single row</p>
+<p><img src="http://qbhzsftsb.bkt.clouddn.com/image-20200608170244716.png" alt="image-20200608170244716"></p>
+</li>
+</ul>
+<h3 id="显示占用内存"><a href="#显示占用内存" class="headerlink" title="显示占用内存"></a>显示占用内存</h3><ul>
+<li>File-&gt;Settings-&gt;Appearance &amp; Behavior-&gt;Appearance</li>
+<li>勾选 Show memory indicator</li>
+</ul>
+<p><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608170608.png" alt="苏宁豆芽图片20200608170608"></p>
+]]></content>
+      <categories>
+        <category>开发工具</category>
+      </categories>
+      <tags>
+        <tag>IntelliJ IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IntlliJ IDEA快捷键-windows默认</title>
+    <url>/2020/06/08/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%AF%87/IntelliJ%20IDEA%E5%BF%AB%E6%8D%B7%E9%94%AE-windows%E9%BB%98%E8%AE%A4/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>开发工具</category>
+      </categories>
+      <tags>
+        <tag>IntelliJ IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IntlliJ IDEA 插件</title>
+    <url>/2020/06/08/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E7%AF%87/IntelliJ%20IDEA%E6%8F%92%E4%BB%B6/</url>
+    <content><![CDATA[<h2 id="Key-Promoter-X"><a href="#Key-Promoter-X" class="headerlink" title="Key Promoter X"></a>Key Promoter X</h2><p>快捷键使用提示<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608153207.png" alt="提示内容"></p>
+<h2 id="Lombok"><a href="#Lombok" class="headerlink" title="Lombok"></a>Lombok</h2><p>自动生成getter/setter/toString方法，entity中不需要再写了</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ActivityEntity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Rainbow-Brackets"><a href="#Rainbow-Brackets" class="headerlink" title="Rainbow Brackets"></a>Rainbow Brackets</h2><p>彩虹括号<br><img src="http://qbhzsftsb.bkt.clouddn.com/%E8%8B%8F%E5%AE%81%E8%B1%86%E8%8A%BD%E5%9B%BE%E7%89%8720200608153459.png" alt="样式展示"></p>
+]]></content>
+      <categories>
+        <category>开发工具</category>
+      </categories>
+      <tags>
+        <tag>IntelliJ IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>将输入的num，用最少的数字2次幂之和进行表示</title>
+    <url>/2020/06/28/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95001/</url>
+    <content><![CDATA[<p>将输入的num，用最少的数字2次幂之和进行表示</p>
+<blockquote>
+<p>示例<br>输入 n = 11<br>输出：3；<br>解释：11=9+1+1；9为3的2次幂，1为1的2次幂；所以最少需要3个数字的2次幂；</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="comment">//二分法查找最大整数平方根</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">mySqrt</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> r = x;</span><br><span class="line">        <span class="keyword">int</span> ans = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (l &lt;= r) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = l + (r - l) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> ((<span class="keyword">long</span>) mid * mid &lt;= x) &#123;</span><br><span class="line">                ans = mid;</span><br><span class="line">                l = mid + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                r = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">nums</span><span class="params">(<span class="keyword">int</span> nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l = nums;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (l &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> res = mySqrt(l);</span><br><span class="line">            l = l - res * res;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Test test = <span class="keyword">new</span> Test();</span><br><span class="line">        System.out.println(test.nums(<span class="number">11</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>驾考科目三笔记</title>
+    <url>/2020/06/11/%E8%80%83%E9%A9%BE%E7%85%A7/%E7%A7%91%E7%9B%AE%E4%B8%89/</url>
+    <content><![CDATA[<h2 id="灯光的使用"><a href="#灯光的使用" class="headerlink" title="灯光的使用"></a>灯光的使用</h2><ul>
+<li>照明不良或没有照明，使用远光灯</li>
+<li>照明良好，跟车，会车，左右转弯，直行通过路口使用近光灯（夜间直行通过使用近光灯）</li>
+<li>夜间通过，超过，远近光灯交替使用</li>
+<li>路边临时停车，车辆出故障，交通事故，小灯（示廓灯）+双跳（危险警示灯）</li>
+</ul>
+<h2 id="考试步骤"><a href="#考试步骤" class="headerlink" title="考试步骤"></a>考试步骤</h2><ul>
+<li>调座椅 系安全带 打左转灯 回头看 拉手刹（转向灯亮三秒再动） 坡道起步</li>
+<li>15 换二档</li>
+<li>20 换三档</li>
+<li>30 换四档</li>
+<li>40 换五档</li>
+<li>松油门 松刹车 离合踩到底换挡</li>
+<li>转向灯打开3秒后方可变道等等</li>
+<li>转弯踩离合，刹到20换2档，路口点刹转头</li>
+<li>一档不超过50米  二档不超过100米   五档行驶100米</li>
+</ul>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>工厂模式</title>
+    <url>/2020/06/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>责任链模式</title>
+    <url>/2020/06/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
       </tags>
   </entry>
 </search>
