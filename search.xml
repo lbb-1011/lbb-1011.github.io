@@ -1,25 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Java8新特性Optional</title>
-    <url>/2020/06/18/Java8%E6%96%B0%E7%89%B9%E6%80%A7Optional/</url>
-    <content><![CDATA[<h1 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a>Optional</h1><p><a href="https://www.cnblogs.com/zhangboyu/p/7580262.html" target="_blank" rel="noopener">参考文章</a></p>
-<blockquote>
-<p>主要解决的     空指针异常（NullPointerException） 问题<br>Optional是个容器，可以包含对象T，也可以放null</p>
+    <title>next常见配置功能插件</title>
+    <url>/2020/06/12/hexo/next%E5%8A%9F%E8%83%BD-%E5%BE%85%E5%AE%8C%E5%96%84/</url>
+    <content><![CDATA[<h3 id="评论功能"><a href="#评论功能" class="headerlink" title="评论功能"></a>评论功能</h3><blockquote>
+<p>leanCode + Valine-Admin</p>
+</blockquote>
+<p>valine部署的实现</p>
 <ul>
-<li>本文例子采用 <a href="">Lambda表达式</a>  的写法 </li>
+<li>注册leanCode</li>
+<li>创建应用获取appid、appkey</li>
+<li>在next主题的配置文件中修改以下内容<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Valine.</span><br><span class="line"># You can get your appid and appkey from https:&#x2F;&#x2F;leancloud.cn</span><br><span class="line"># more info please open https:&#x2F;&#x2F;valine.js.org</span><br><span class="line"># 评论功能</span><br><span class="line">valine:</span><br><span class="line">  enable: true</span><br><span class="line">  appid:  # your leancloud application appid</span><br><span class="line">  appkey:  # your leancloud application appkey</span><br><span class="line">  notify: false # mail notifier , https:&#x2F;&#x2F;github.com&#x2F;xCss&#x2F;Valine&#x2F;wiki</span><br><span class="line">  verify: false # Verification code</span><br><span class="line">  placeholder: 欢迎留言指正 # comment box placeholder</span><br><span class="line">  avatar: mm # gravatar style</span><br><span class="line">  guest_info: nick,mail # custom comment header</span><br><span class="line">  pageSize: 10 # pagination size</span><br></pre></td></tr></table></figure>
+Valine-Admin 的实现<blockquote>
+<p>参考DesertsP大神的GitHub</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;github.com&#x2F;DesertsP&#x2F;Valine-Admin</span><br></pre></td></tr></table></figure>
+
+</li>
 </ul>
+<h3 id="置顶功能"><a href="#置顶功能" class="headerlink" title="置顶功能"></a>置顶功能</h3><p>修改hexo-generator-index插件，hexo文件目录中，把<code>node_modules/hexo-generator-index/lib/generator.js</code>中代码替换为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#39;use strict&#39;;</span><br><span class="line">var pagination &#x3D; require(&#39;hexo-pagination&#39;);</span><br><span class="line">module.exports &#x3D; function(locals)&#123;</span><br><span class="line">  var config &#x3D; this.config;</span><br><span class="line">  var posts &#x3D; locals.posts;</span><br><span class="line">    posts.data &#x3D; posts.data.sort(function(a, b) &#123;</span><br><span class="line">        if(a.top &amp;&amp; b.top) &#123; &#x2F;&#x2F; 两篇文章top都有定义</span><br><span class="line">            if(a.top &#x3D;&#x3D; b.top) return b.date - a.date; &#x2F;&#x2F; 若top值一样则按照文章日期降序排</span><br><span class="line">            else return b.top - a.top; &#x2F;&#x2F; 否则按照top值降序排</span><br><span class="line">        &#125;</span><br><span class="line">        else if(a.top &amp;&amp; !b.top) &#123; &#x2F;&#x2F; 以下是只有一篇文章top有定义，那么将有top的排在前面</span><br><span class="line">            return -1;</span><br><span class="line">        &#125;</span><br><span class="line">        else if(!a.top &amp;&amp; b.top) &#123;</span><br><span class="line">            return 1;</span><br><span class="line">        &#125;</span><br><span class="line">        else return b.date - a.date; &#x2F;&#x2F; 都没定义按照文章日期降序排</span><br><span class="line">    &#125;);</span><br><span class="line">  var paginationDir &#x3D; config.pagination_dir || &#39;page&#39;;</span><br><span class="line">  return pagination(&#39;&#39;, posts, &#123;</span><br><span class="line">    perPage: config.index_generator.per_page,</span><br><span class="line">    layout: [&#39;index&#39;, &#39;archive&#39;],</span><br><span class="line">    format: paginationDir + &#39;&#x2F;%d&#x2F;&#39;,</span><br><span class="line">    data: &#123;</span><br><span class="line">      __index: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>博文添加，top值越大越靠前</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: next功能待完善</span><br><span class="line">date: 2020-06-12 21:13:35</span><br><span class="line">tags: </span><br><span class="line">- next</span><br><span class="line">categories:  </span><br><span class="line">- 其他</span><br><span class="line">top: 1000 # top值越大越靠前</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>添加置顶标签，修改文件<code>./themes/next/layout/_macro/post.swig</code>，在<code>&lt;div class=&quot;post-meta&quot;&gt;</code>添加如下代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if post.top %&#125;</span><br><span class="line">  &lt;i class&#x3D;&quot;fa fa-thumb-tack&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">  &lt;font color&#x3D;7D26CD&gt;置顶&lt;&#x2F;font&gt;</span><br><span class="line">  &lt;span class&#x3D;&quot;post-meta-divider&quot;&gt;|&lt;&#x2F;span&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="代码复制"><a href="#代码复制" class="headerlink" title="代码复制"></a>代码复制</h3><h3 id="顶部加进度条"><a href="#顶部加进度条" class="headerlink" title="顶部加进度条"></a>顶部加进度条</h3><blockquote>
+<p>切换到文件夹的<code>/themes/next</code>文件夹下，执行以下命令</p>
 </blockquote>
-<h2 id="创建Optional实例"><a href="#创建Optional实例" class="headerlink" title="创建Optional实例"></a>创建Optional实例</h2><h2 id="链式调用"><a href="#链式调用" class="headerlink" title="链式调用"></a>链式调用</h2><h2 id="Java9增强"><a href="#Java9增强" class="headerlink" title="Java9增强"></a>Java9增强</h2><blockquote>
-<p>Java 9 为Optional类新增了3个方法：<kbd>or()</kbd> ifpresendOrElse() stream()</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;theme-next-pace source&#x2F;lib&#x2F;pace</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>进入next的配置文件<code>_config.yml</code>中设置</p>
 </blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Progress bar in the top during page loading.</span><br><span class="line">pace: true &#x2F;&#x2F;开启进度条</span><br><span class="line"># Themes list:</span><br><span class="line">#pace-theme-big-counter</span><br><span class="line">#pace-theme-bounce</span><br><span class="line">#pace-theme-barber-shop</span><br><span class="line">#pace-theme-center-atom</span><br><span class="line">#pace-theme-center-circle</span><br><span class="line">#pace-theme-center-radar</span><br><span class="line">#pace-theme-center-simple</span><br><span class="line">#pace-theme-corner-indicator</span><br><span class="line">#pace-theme-fill-left</span><br><span class="line">#pace-theme-flash</span><br><span class="line">#pace-theme-loading-bar</span><br><span class="line">#pace-theme-mac-osx</span><br><span class="line">#pace-theme-minimal</span><br><span class="line"># For example</span><br><span class="line">pace_theme: pace-theme-center-simple &#x2F;&#x2F;进度条样式</span><br><span class="line"># pace_theme: pace-theme-minimal</span><br></pre></td></tr></table></figure>
+<h3 id="3D标签"><a href="#3D标签" class="headerlink" title="3D标签"></a>3D标签</h3><p>Hexo博客Next主题建立标签云hexo-tag-cloud及效果展示<br><a href="https://blog.csdn.net/aoman_hao/article/details/89416634" target="_blank" rel="noopener">https://blog.csdn.net/aoman_hao/article/details/89416634</a></p>
+<h3 id="修改背景图"><a href="#修改背景图" class="headerlink" title="修改背景图"></a>修改背景图</h3><blockquote>
+<p>修改<code>themes\next\source\css\_custom\custom.styl</code>文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 添加以下代码，添加背景图片</span><br><span class="line">body &#123;</span><br><span class="line">    background:url(https:&#x2F;&#x2F;source.unsplash.com&#x2F;random&#x2F;2560x1440);</span><br><span class="line">    background-repeat: no-repeat;</span><br><span class="line">    background-attachment:fixed;</span><br><span class="line">    background-position:50% 50%;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="修改文章底部标签样式"><a href="#修改文章底部标签样式" class="headerlink" title="修改文章底部标签样式"></a>修改文章底部标签样式</h3><p>修改<code>hexo\themes\next\layout\_macro\post.swig</code>中文件，<code>command</code>+<code>f</code>搜索<code>rel=&quot;tag&quot;&gt;#</code>，将#替换成<i class="fa fa-tag"></i></p>
+<h3 id="右下角添加宠物"><a href="#右下角添加宠物" class="headerlink" title="右下角添加宠物"></a>右下角添加宠物</h3><p>1、切换到博客项目的根路径，执行以下命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install -save hexo-helper-live2d</span><br><span class="line">npm install live2d-widget-model-wanko(主题可选如下)</span><br></pre></td></tr></table></figure>
+<p>2、mac OS安装时出现错误</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gyp: No Xcode or CLT version detected!</span><br></pre></td></tr></table></figure>
+<p>3、解决办法，参考<a href="https://lbb-1011.gitee.io/2020/06/14/Mac%20OS/npm/#more" target="_blank" rel="noopener">npm执行报错</a>，然后执行步骤1<br>4、在hexo的<code>_config.yml</code>中添加如下参数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">live2d:</span><br><span class="line">  enable: true</span><br><span class="line">  scriptFrom: local # 默认</span><br><span class="line">  pluginRootPath: live2dw&#x2F; # 插件在站点上的根目录(相对路径)</span><br><span class="line">  pluginJsPath: lib&#x2F; # 脚本文件相对与插件根目录路径</span><br><span class="line">  pluginModelPath: assets&#x2F; # 模型文件相对与插件根目录路径</span><br><span class="line">  tagMode: false # 标签模式, 是否仅替换 live2d tag标签而非插入到所有页面中</span><br><span class="line">  debug: false # 调试, 是否在控制台输出日志</span><br><span class="line">  model:</span><br><span class="line">    use: live2d-widget-model-wanko</span><br><span class="line">  display:</span><br><span class="line">    position: right</span><br><span class="line">    width: 145</span><br><span class="line">    height: 315</span><br><span class="line">  mobile:</span><br><span class="line">    show: false # 是否在移动设备上显示</span><br><span class="line">    scale: 0.5 # 移动设备上的缩放</span><br><span class="line">  react:</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>步骤1、步骤4可选值</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">live2d-widget-model-chitose</span><br><span class="line">live2d-widget-model-epsilon2_1</span><br><span class="line">live2d-widget-model-gf</span><br><span class="line">live2d-widget-model-haru&#x2F;01 (use npm install --save live2d-widget-model-haru)</span><br><span class="line">live2d-widget-model-haru&#x2F;02 (use npm install --save live2d-widget-model-haru)</span><br><span class="line">live2d-widget-model-haruto</span><br><span class="line">live2d-widget-model-hibiki</span><br><span class="line">live2d-widget-model-hijiki</span><br><span class="line">live2d-widget-model-izumi</span><br><span class="line">live2d-widget-model-koharu</span><br><span class="line">live2d-widget-model-miku</span><br><span class="line">live2d-widget-model-ni-j</span><br><span class="line">live2d-widget-model-nico</span><br><span class="line">live2d-widget-model-nietzsche</span><br><span class="line">live2d-widget-model-nipsilon</span><br><span class="line">live2d-widget-model-nito</span><br><span class="line">live2d-widget-model-shizuku</span><br><span class="line">live2d-widget-model-tororo</span><br><span class="line">live2d-widget-model-tsumiki</span><br><span class="line">live2d-widget-model-unitychan</span><br><span class="line">live2d-widget-model-wanko</span><br><span class="line">live2d-widget-model-z16</span><br></pre></td></tr></table></figure>
+<p>5、重新启动项目</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</span><br></pre></td></tr></table></figure>
+
+<p>6、删除主题，删除<code>hexo/node_modules/hexo-helper-live2d</code>文件夹，修改<code>hexo/package.json</code>文件，删除live2d相关内容</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;dependencies&quot;: &#123;</span><br><span class="line">    &quot;hexo&quot;: &quot;^4.2.1&quot;,</span><br><span class="line">    &quot;hexo-deployer-git&quot;: &quot;^2.1.0&quot;,</span><br><span class="line">    &quot;hexo-helper-live2d&quot;: &quot;^3.1.1&quot;,</span><br><span class="line">    &quot;live2d-widget-model-haruto&quot;: &quot;^1.0.5&quot;,</span><br><span class="line">    &quot;live2d-widget-model-wanko&quot;: &quot;^1.0.5&quot;,</span><br><span class="line">    &quot;live2d-widget-model-z16&quot;: &quot;^1.0.5&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Markdown渲染风格"><a href="#Markdown渲染风格" class="headerlink" title="Markdown渲染风格"></a>Markdown渲染风格</h3><p>Hexo 默认使用 hexo-renderer-marked 引擎渲染网页</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --save</span><br><span class="line">#挑一个喜欢的</span><br><span class="line">npm install hexo-renderer-kramed --save</span><br><span class="line">npm install hexo-renderer-markdown-it --save</span><br><span class="line">npm install hexo-include-markdown --save</span><br><span class="line">npm install hexo-markdown-it-tippy --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="显示更新时间"><a href="#显示更新时间" class="headerlink" title="显示更新时间"></a>显示更新时间</h3><p>修改<code>next主题配置文件</code>把<code>updated_at:false</code>改成<code>updated_at:true</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Post meta display settings</span><br><span class="line">post_meta:</span><br><span class="line">  item_text: true</span><br><span class="line">  created_at: true</span><br><span class="line">  updated_at: true</span><br><span class="line">  categories: true</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
 ]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>next配置</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>将输入的num，用最少的数字2次幂之和进行表示</title>
+    <url>/2020/06/28/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95001/</url>
+    <content><![CDATA[<p>将输入的num，用最少的数字2次幂之和进行表示</p>
+<blockquote>
+<p>示例<br>输入 n = 11<br>输出：3；<br>解释：11=9+1+1；9为3的2次幂，1为1的2次幂；所以最少需要3个数字的2次幂；</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="comment">//二分法查找最大整数平方根</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">mySqrt</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> r = x;</span><br><span class="line">        <span class="keyword">int</span> ans = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (l &lt;= r) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = l + (r - l) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> ((<span class="keyword">long</span>) mid * mid &lt;= x) &#123;</span><br><span class="line">                ans = mid;</span><br><span class="line">                l = mid + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                r = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">nums</span><span class="params">(<span class="keyword">int</span> nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l = nums;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (l &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> res = mySqrt(l);</span><br><span class="line">            l = l - res * res;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Test test = <span class="keyword">new</span> Test();</span><br><span class="line">        System.out.println(test.nums(<span class="number">11</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>技术</category>
       </categories>
       <tags>
-        <tag>java基础</tag>
+        <tag>算法</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Java学习技术栈</title>
+    <url>/2020/06/21/Java%E5%AD%A6%E4%B9%A0%E6%8A%80%E6%9C%AF%E6%A0%88/</url>
+    <content><![CDATA[<p>技术落后</p>
+<ul>
+<li>公司技术框架落后，工作主要是CRUD，没有机会接触底层技术<br>想去大厂</li>
+<li>大厂技术栈</li>
+</ul>
+<hr>
+<ul>
+<li>分布式架构</li>
+<li>分布式消息中间件</li>
+<li>rabbitmq</li>
+<li>kafka</li>
+<li>分布式存储中间件</li>
+<li>Redis</li>
+<li>MongoDB</li>
+<li>fastDFS</li>
+<li>Elasticsearch</li>
+<li>分布式框架</li>
+<li>DUBBO</li>
+<li>zookeeper</li>
+<li>netty</li>
+<li></li>
+</ul>
+<hr>
+<ul>
+<li>微服务架构</li>
+<li>源码分析</li>
+<li>并发编程</li>
+<li>性能优化</li>
+<li>数据结构与算法</li>
+<li>高并发实战项目经验</li>
+<li>工程化协作</li>
+</ul>
+<p>掌握的技术与工作年限严重不匹配<br>Java技术栈太多，不知道学哪些，没人指导</p>
+]]></content>
   </entry>
   <entry>
     <title>免费超高清照片素材站</title>
@@ -76,14 +183,46 @@
       </tags>
   </entry>
   <entry>
-    <title>MQ</title>
-    <url>/2020/06/11/MQ/mq/</url>
+    <title>责任链模式</title>
+    <url>/2020/06/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[]]></content>
       <categories>
         <category>技术</category>
       </categories>
       <tags>
-        <tag>MQ</tag>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>工厂模式</title>
+    <url>/2020/06/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java8新特性Optional</title>
+    <url>/2020/06/18/Java8%E6%96%B0%E7%89%B9%E6%80%A7Optional/</url>
+    <content><![CDATA[<h1 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a>Optional</h1><p><a href="https://www.cnblogs.com/zhangboyu/p/7580262.html" target="_blank" rel="noopener">参考文章</a></p>
+<blockquote>
+<p>主要解决的     空指针异常（NullPointerException） 问题<br>Optional是个容器，可以包含对象T，也可以放null</p>
+<ul>
+<li>本文例子采用 <a href="">Lambda表达式</a>  的写法 </li>
+</ul>
+</blockquote>
+<h2 id="创建Optional实例"><a href="#创建Optional实例" class="headerlink" title="创建Optional实例"></a>创建Optional实例</h2><h2 id="链式调用"><a href="#链式调用" class="headerlink" title="链式调用"></a>链式调用</h2><h2 id="Java9增强"><a href="#Java9增强" class="headerlink" title="Java9增强"></a>Java9增强</h2><blockquote>
+<p>Java 9 为Optional类新增了3个方法：<kbd>or()</kbd> ifpresendOrElse() stream()</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>java基础</tag>
       </tags>
   </entry>
   <entry>
@@ -108,169 +247,42 @@
       </tags>
   </entry>
   <entry>
-    <title>hexo常用操作</title>
-    <url>/2020/06/06/hexo/hexo/</url>
-    <content><![CDATA[<p>参考文章<a href="https://www.jianshu.com/p/dfcae367aae6" target="_blank" rel="noopener">Mac下基于github的hexo博客搭建及常用功能添加</a></p>
-<p>进入hexo项目下<br>本地启动</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>或者缩写</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
-<p>配置部署文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: https:&#x2F;&#x2F;github.com&#x2F;lbb-1011&#x2F;lbb-1011.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
-<p>上传到github<br>退出保存_config.yml文件后，重新回到hexo的根目录下，再使用如下命令就可以完成部署了：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>也可以使用命令的简写：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<h1 id="coding部署"><a href="#coding部署" class="headerlink" title="coding部署"></a>coding部署</h1><p><a href="https://lbb-1011.coding.net/" target="_blank" rel="noopener">https://lbb-1011.coding.net/</a></p>
-]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>next分页显示有问题</title>
-    <url>/2020/06/06/hexo/next%E5%88%86%E9%A1%B5/</url>
-    <content><![CDATA[<p>错误显示<br><img src="http://qbhzsftsb.bkt.clouddn.com/WX20200606-172116%402x.png" alt="image-20200606170555849"><br>修改代码 themes\next\layout_partials\pagination.swig<br>原来的代码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if page.prev or page.next %&#125;</span><br><span class="line">  &lt;nav class&#x3D;&quot;pagination&quot;&gt;</span><br><span class="line">    &#123;&#123;</span><br><span class="line">      paginator(&#123;</span><br><span class="line">        prev_text: &#39;&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;&#39;,</span><br><span class="line">        next_text: &#39;&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;&#39;,</span><br><span class="line">        mid_size: 1</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;&#125;</span><br><span class="line">  &lt;&#x2F;nav&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
-<p>修改为</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if page.prev or page.next %&#125;</span><br><span class="line">  &lt;nav class&#x3D;&quot;pagination&quot;&gt;</span><br><span class="line">    &#123;&#123;</span><br><span class="line">      paginator(&#123;</span><br><span class="line">        prev_text: &#39;&lt;&#39;,</span><br><span class="line">        next_text: &#39;&gt;&#39;,</span><br><span class="line">        mid_size: 1</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;&#125;</span><br><span class="line">  &lt;&#x2F;nav&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>hexo_next</category>
-      </categories>
-      <tags>
-        <tag>next配置</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>next常见配置功能插件</title>
-    <url>/2020/06/12/hexo/next%E5%8A%9F%E8%83%BD-%E5%BE%85%E5%AE%8C%E5%96%84/</url>
-    <content><![CDATA[<h3 id="评论功能"><a href="#评论功能" class="headerlink" title="评论功能"></a>评论功能</h3><blockquote>
-<p>leanCode + Valine-Admin</p>
-</blockquote>
-<p>valine部署的实现</p>
-<ul>
-<li>注册leanCode</li>
-<li>创建应用获取appid、appkey</li>
-<li>在next主题的配置文件中修改以下内容<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Valine.</span><br><span class="line"># You can get your appid and appkey from https:&#x2F;&#x2F;leancloud.cn</span><br><span class="line"># more info please open https:&#x2F;&#x2F;valine.js.org</span><br><span class="line"># 评论功能</span><br><span class="line">valine:</span><br><span class="line">  enable: true</span><br><span class="line">  appid:  # your leancloud application appid</span><br><span class="line">  appkey:  # your leancloud application appkey</span><br><span class="line">  notify: false # mail notifier , https:&#x2F;&#x2F;github.com&#x2F;xCss&#x2F;Valine&#x2F;wiki</span><br><span class="line">  verify: false # Verification code</span><br><span class="line">  placeholder: 欢迎留言指正 # comment box placeholder</span><br><span class="line">  avatar: mm # gravatar style</span><br><span class="line">  guest_info: nick,mail # custom comment header</span><br><span class="line">  pageSize: 10 # pagination size</span><br></pre></td></tr></table></figure>
-Valine-Admin 的实现<blockquote>
-<p>参考DesertsP大神的GitHub</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;github.com&#x2F;DesertsP&#x2F;Valine-Admin</span><br></pre></td></tr></table></figure>
-</blockquote>
-</li>
+    <title>驾考科目三笔记</title>
+    <url>/2020/06/11/%E8%80%83%E9%A9%BE%E7%85%A7/%E7%A7%91%E7%9B%AE%E4%B8%89/</url>
+    <content><![CDATA[<h2 id="灯光的使用"><a href="#灯光的使用" class="headerlink" title="灯光的使用"></a>灯光的使用</h2><ul>
+<li>照明不良或没有照明，使用远光灯</li>
+<li>照明良好，跟车，会车，左右转弯，直行通过路口使用近光灯（夜间直行通过使用近光灯）</li>
+<li>夜间通过，超过，远近光灯交替使用</li>
+<li>路边临时停车，车辆出故障，交通事故，小灯（示廓灯）+双跳（危险警示灯）</li>
 </ul>
-<h3 id="置顶功能"><a href="#置顶功能" class="headerlink" title="置顶功能"></a>置顶功能</h3><p>修改hexo-generator-index插件，hexo文件目录中，把<code>node_modules/hexo-generator-index/lib/generator.js</code>中代码替换为：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#39;use strict&#39;;</span><br><span class="line">var pagination &#x3D; require(&#39;hexo-pagination&#39;);</span><br><span class="line">module.exports &#x3D; function(locals)&#123;</span><br><span class="line">  var config &#x3D; this.config;</span><br><span class="line">  var posts &#x3D; locals.posts;</span><br><span class="line">    posts.data &#x3D; posts.data.sort(function(a, b) &#123;</span><br><span class="line">        if(a.top &amp;&amp; b.top) &#123; &#x2F;&#x2F; 两篇文章top都有定义</span><br><span class="line">            if(a.top &#x3D;&#x3D; b.top) return b.date - a.date; &#x2F;&#x2F; 若top值一样则按照文章日期降序排</span><br><span class="line">            else return b.top - a.top; &#x2F;&#x2F; 否则按照top值降序排</span><br><span class="line">        &#125;</span><br><span class="line">        else if(a.top &amp;&amp; !b.top) &#123; &#x2F;&#x2F; 以下是只有一篇文章top有定义，那么将有top的排在前面</span><br><span class="line">            return -1;</span><br><span class="line">        &#125;</span><br><span class="line">        else if(!a.top &amp;&amp; b.top) &#123;</span><br><span class="line">            return 1;</span><br><span class="line">        &#125;</span><br><span class="line">        else return b.date - a.date; &#x2F;&#x2F; 都没定义按照文章日期降序排</span><br><span class="line">    &#125;);</span><br><span class="line">  var paginationDir &#x3D; config.pagination_dir || &#39;page&#39;;</span><br><span class="line">  return pagination(&#39;&#39;, posts, &#123;</span><br><span class="line">    perPage: config.index_generator.per_page,</span><br><span class="line">    layout: [&#39;index&#39;, &#39;archive&#39;],</span><br><span class="line">    format: paginationDir + &#39;&#x2F;%d&#x2F;&#39;,</span><br><span class="line">    data: &#123;</span><br><span class="line">      __index: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><br>博文添加，top值越大越靠前<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: next功能待完善</span><br><span class="line">date: 2020-06-12 21:13:35</span><br><span class="line">tags: </span><br><span class="line">- next</span><br><span class="line">categories:  </span><br><span class="line">- 其他</span><br><span class="line">top: 1000 # top值越大越靠前</span><br><span class="line">---</span><br></pre></td></tr></table></figure><br>添加置顶标签，修改文件<code>./themes/next/layout/_macro/post.swig</code>，在<code>&lt;div class=&quot;post-meta&quot;&gt;</code>添加如下代码<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if post.top %&#125;</span><br><span class="line">  &lt;i class&#x3D;&quot;fa fa-thumb-tack&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">  &lt;font color&#x3D;7D26CD&gt;置顶&lt;&#x2F;font&gt;</span><br><span class="line">  &lt;span class&#x3D;&quot;post-meta-divider&quot;&gt;|&lt;&#x2F;span&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="代码复制"><a href="#代码复制" class="headerlink" title="代码复制"></a>代码复制</h3><h3 id="顶部加进度条"><a href="#顶部加进度条" class="headerlink" title="顶部加进度条"></a>顶部加进度条</h3><blockquote>
-<p>切换到文件夹的<code>/themes/next</code>文件夹下，执行以下命令<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;theme-next-pace source&#x2F;lib&#x2F;pace</span><br></pre></td></tr></table></figure><br>进入next的配置文件<code>_config.yml</code>中设置<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Progress bar in the top during page loading.</span><br><span class="line">pace: true &#x2F;&#x2F;开启进度条</span><br><span class="line"># Themes list:</span><br><span class="line">#pace-theme-big-counter</span><br><span class="line">#pace-theme-bounce</span><br><span class="line">#pace-theme-barber-shop</span><br><span class="line">#pace-theme-center-atom</span><br><span class="line">#pace-theme-center-circle</span><br><span class="line">#pace-theme-center-radar</span><br><span class="line">#pace-theme-center-simple</span><br><span class="line">#pace-theme-corner-indicator</span><br><span class="line">#pace-theme-fill-left</span><br><span class="line">#pace-theme-flash</span><br><span class="line">#pace-theme-loading-bar</span><br><span class="line">#pace-theme-mac-osx</span><br><span class="line">#pace-theme-minimal</span><br><span class="line"># For example</span><br><span class="line">pace_theme: pace-theme-center-simple &#x2F;&#x2F;进度条样式</span><br><span class="line"># pace_theme: pace-theme-minimal</span><br></pre></td></tr></table></figure></p>
-<h3 id="3D标签"><a href="#3D标签" class="headerlink" title="3D标签"></a>3D标签</h3></blockquote>
-<p>Hexo博客Next主题建立标签云hexo-tag-cloud及效果展示<br><a href="https://blog.csdn.net/aoman_hao/article/details/89416634" target="_blank" rel="noopener">https://blog.csdn.net/aoman_hao/article/details/89416634</a></p>
-<h3 id="修改背景图"><a href="#修改背景图" class="headerlink" title="修改背景图"></a>修改背景图</h3><blockquote>
-<p>修改<code>themes\next\source\css\_custom\custom.styl</code>文件<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 添加以下代码，添加背景图片</span><br><span class="line">body &#123;</span><br><span class="line">    background:url(https:&#x2F;&#x2F;source.unsplash.com&#x2F;random&#x2F;2560x1440);</span><br><span class="line">    background-repeat: no-repeat;</span><br><span class="line">    background-attachment:fixed;</span><br><span class="line">    background-position:50% 50%;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<h3 id="修改文章底部标签样式"><a href="#修改文章底部标签样式" class="headerlink" title="修改文章底部标签样式"></a>修改文章底部标签样式</h3><p>修改<code>hexo\themes\next\layout\_macro\post.swig</code>中文件，<code>command</code>+<code>f</code>搜索<code>rel=&quot;tag&quot;&gt;#</code>，将#替换成<i class="fa fa-tag"></i></p>
-<h3 id="右下角添加宠物"><a href="#右下角添加宠物" class="headerlink" title="右下角添加宠物"></a>右下角添加宠物</h3><p>1、切换到博客项目的根路径，执行以下命令<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install -save hexo-helper-live2d</span><br><span class="line">npm install live2d-widget-model-wanko(主题可选如下)</span><br></pre></td></tr></table></figure><br>2、mac OS安装时出现错误</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gyp: No Xcode or CLT version detected!</span><br></pre></td></tr></table></figure>
-<p>3、解决办法，参考<a href="https://lbb-1011.gitee.io/2020/06/14/Mac%20OS/npm/#more" target="_blank" rel="noopener">npm执行报错</a>，然后执行步骤1<br>4、在hexo的<code>_config.yml</code>中添加如下参数</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">live2d:</span><br><span class="line">  enable: true</span><br><span class="line">  scriptFrom: local # 默认</span><br><span class="line">  pluginRootPath: live2dw&#x2F; # 插件在站点上的根目录(相对路径)</span><br><span class="line">  pluginJsPath: lib&#x2F; # 脚本文件相对与插件根目录路径</span><br><span class="line">  pluginModelPath: assets&#x2F; # 模型文件相对与插件根目录路径</span><br><span class="line">  tagMode: false # 标签模式, 是否仅替换 live2d tag标签而非插入到所有页面中</span><br><span class="line">  debug: false # 调试, 是否在控制台输出日志</span><br><span class="line">  model:</span><br><span class="line">    use: live2d-widget-model-wanko</span><br><span class="line">  display:</span><br><span class="line">    position: right</span><br><span class="line">    width: 145</span><br><span class="line">    height: 315</span><br><span class="line">  mobile:</span><br><span class="line">    show: false # 是否在移动设备上显示</span><br><span class="line">    scale: 0.5 # 移动设备上的缩放</span><br><span class="line">  react:</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>步骤1、步骤4可选值<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">live2d-widget-model-chitose</span><br><span class="line">live2d-widget-model-epsilon2_1</span><br><span class="line">live2d-widget-model-gf</span><br><span class="line">live2d-widget-model-haru&#x2F;01 (use npm install --save live2d-widget-model-haru)</span><br><span class="line">live2d-widget-model-haru&#x2F;02 (use npm install --save live2d-widget-model-haru)</span><br><span class="line">live2d-widget-model-haruto</span><br><span class="line">live2d-widget-model-hibiki</span><br><span class="line">live2d-widget-model-hijiki</span><br><span class="line">live2d-widget-model-izumi</span><br><span class="line">live2d-widget-model-koharu</span><br><span class="line">live2d-widget-model-miku</span><br><span class="line">live2d-widget-model-ni-j</span><br><span class="line">live2d-widget-model-nico</span><br><span class="line">live2d-widget-model-nietzsche</span><br><span class="line">live2d-widget-model-nipsilon</span><br><span class="line">live2d-widget-model-nito</span><br><span class="line">live2d-widget-model-shizuku</span><br><span class="line">live2d-widget-model-tororo</span><br><span class="line">live2d-widget-model-tsumiki</span><br><span class="line">live2d-widget-model-unitychan</span><br><span class="line">live2d-widget-model-wanko</span><br><span class="line">live2d-widget-model-z16</span><br></pre></td></tr></table></figure><br>5、重新启动项目</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</span><br></pre></td></tr></table></figure>
-<p>6、删除主题，删除<code>hexo/node_modules/hexo-helper-live2d</code>文件夹，修改<code>hexo/package.json</code>文件，删除live2d相关内容</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;dependencies&quot;: &#123;</span><br><span class="line">    &quot;hexo&quot;: &quot;^4.2.1&quot;,</span><br><span class="line">    &quot;hexo-deployer-git&quot;: &quot;^2.1.0&quot;,</span><br><span class="line">    &quot;hexo-helper-live2d&quot;: &quot;^3.1.1&quot;,</span><br><span class="line">    &quot;live2d-widget-model-haruto&quot;: &quot;^1.0.5&quot;,</span><br><span class="line">    &quot;live2d-widget-model-wanko&quot;: &quot;^1.0.5&quot;,</span><br><span class="line">    &quot;live2d-widget-model-z16&quot;: &quot;^1.0.5&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Markdown渲染风格"><a href="#Markdown渲染风格" class="headerlink" title="Markdown渲染风格"></a>Markdown渲染风格</h3><p>Hexo 默认使用 hexo-renderer-marked 引擎渲染网页<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --save</span><br><span class="line">#挑一个喜欢的</span><br><span class="line">npm install hexo-renderer-kramed --save</span><br><span class="line">npm install hexo-renderer-markdown-it --save</span><br><span class="line">npm install hexo-include-markdown --save</span><br><span class="line">npm install hexo-markdown-it-tippy --save</span><br></pre></td></tr></table></figure></p>
-<h3 id="显示更新时间"><a href="#显示更新时间" class="headerlink" title="显示更新时间"></a>显示更新时间</h3><p>修改<code>next主题配置文件</code>把<code>updated_at:false</code>改成<code>updated_at:true</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Post meta display settings</span><br><span class="line">post_meta:</span><br><span class="line">  item_text: true</span><br><span class="line">  created_at: true</span><br><span class="line">  updated_at: true</span><br><span class="line">  categories: true</span><br></pre></td></tr></table></figure></p>
+<h2 id="考试步骤"><a href="#考试步骤" class="headerlink" title="考试步骤"></a>考试步骤</h2><ul>
+<li>调座椅 系安全带 打左转灯 回头看 拉手刹（转向灯亮三秒再动） 坡道起步</li>
+<li>15 换二档</li>
+<li>20 换三档</li>
+<li>30 换四档</li>
+<li>40 换五档</li>
+<li>松油门 松刹车 离合踩到底换挡</li>
+<li>转向灯打开3秒后方可变道等等</li>
+<li>转弯踩离合，刹到20换2档，路口点刹转头</li>
+<li>一档不超过50米  二档不超过100米   五档行驶100米</li>
+</ul>
 ]]></content>
       <categories>
         <category>其他</category>
       </categories>
       <tags>
-        <tag>next配置</tag>
+        <tag>其他</tag>
       </tags>
   </entry>
   <entry>
-    <title>next左边栏日志点击有问题</title>
-    <url>/2020/06/06/hexo/next%E6%97%A5%E5%BF%97/</url>
-    <content><![CDATA[<h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>记录下出现的 问题：日志出现Cannot GET /archives/%7C%7C%20list/问题</p>
-<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>1，第一种解决办法<br>themes/next/_config.yml 文件下将archives：/archives/ || archive 改成archives：/archives/<br>删掉后面的||archive，的确能够解决问题，但是就没有图标了</p>
-<p>2，第二种解决办法<br>next主题目录下 找到文件/layout/_macro/sidebar.swig<br>修改以下内容（原因是url_for函数将||转码了）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;a href&#x3D;&quot;&#123;&#123;url_for(theme.menu.archives).split(&#39;||&#39;)[0] | trim &#125;&#125;&quot;&gt; </span><br><span class="line">改成</span><br><span class="line">&lt;a href&#x3D;&quot;&#123;&#123;url_for(theme.menu.archives.split(&#39;||&#39;)[0])| trim&#125;&#125;&quot;&gt;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>hexo_next</category>
-      </categories>
-      <tags>
-        <tag>next配置</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Redis安装</title>
-    <url>/2020/06/06/redis/Redis%E5%AE%89%E8%A3%85/</url>
-    <content><![CDATA[<h4 id="Redis安装"><a href="#Redis安装" class="headerlink" title="Redis安装"></a>Redis安装</h4><p>解压</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -zxf redis-6.0-rc1.tar.gz</span><br></pre></td></tr></table></figure>
-<p>redis解压包挪到/user/local</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mv redis-6.0-rc1 &#x2F;usr&#x2F;local&#x2F;</span><br></pre></td></tr></table></figure>
-<p>编译 进入文件夹/usr/local/redis-6.0-rc1</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
-<p>安装redis 进入文件夹src</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure>
-
-<p>为了方便管理 在Redis目录下创建  bin 和 etc</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_0_9_centos redis-4.0.9]# mkdir bin</span><br><span class="line">[root@VM_0_9_centos redis-4.0.9]# mkdir etc</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mv redis.conf &#x2F;usr&#x2F;local&#x2F;redis-4.0.9&#x2F;etc&#x2F;</span><br><span class="line">mv mkreleasehdr.sh redis-benchmark redis-check-aof redis-check-rdb redis-cli redis-server &#x2F;usr&#x2F;local&#x2F;redis-4.0.9&#x2F;bin&#x2F;</span><br></pre></td></tr></table></figure>
-
-<p>启动Redis 进入 bin目录</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_0_9_centos bin]# .&#x2F;redis-server</span><br></pre></td></tr></table></figure>
-<p>关闭redis</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;redis-cli shutdown</span><br></pre></td></tr></table></figure>
-
-<p>配置后台启动</p>
-<blockquote>
-<p>首先编辑conf文件，将daemonize属性改为yes（表明需要在后台运行）<br>再次启动redis服务，并指定启动服务配置文件</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;redis-server &#x2F;usr&#x2F;local&#x2F;redis-4.0.9&#x2F;etc&#x2F;redis.conf</span><br></pre></td></tr></table></figure>
-<h4 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h4><p>无法远程连接</p>
-<blockquote>
-<p>修改redis.conf 注释掉 bind 127.0.0.1<br>protected-mode 改为 no</p>
-</blockquote>
-<ul>
-<li>Redis Error: Connection failed. (Error: connect ETIMEDOUT)</li>
-</ul>
-]]></content>
+    <title>MQ</title>
+    <url>/2020/06/11/MQ/mq/</url>
+    <content><![CDATA[]]></content>
       <categories>
         <category>技术</category>
       </categories>
       <tags>
-        <tag>redis</tag>
-        <tag>redis安装</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>next主题常用菜单的配置</title>
-    <url>/2020/06/06/hexo/next%E6%A0%87%E7%AD%BE%E5%92%8C%E5%88%86%E7%B1%BB/</url>
-    <content><![CDATA[<h3 id="标签和分类"><a href="#标签和分类" class="headerlink" title="标签和分类"></a>标签和分类</h3><h4 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h4><p>新建一个标签页面，命名为tags<br>新建一个分类页面，命名为categories</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo new page tags</span><br><span class="line">$ hexo new page categories</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>在source文件夹下会出现tags/index.md和categories/index.md<br>打开index.md做如下编辑，title可根据自己喜欢更改</p>
-</blockquote>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: tags</span><br><span class="line">date: 2017-07-10 16:36:26</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">---</span><br><span class="line">---</span><br><span class="line">title: categories</span><br><span class="line">date: 2017-07-10 16:36:26</span><br><span class="line">type: &quot;categories&quot;</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-
-<h4 id="修改-主题配置文件"><a href="#修改-主题配置文件" class="headerlink" title="修改 主题配置文件"></a>修改 主题配置文件</h4><p>找到menu，将tags取消注释</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: &#x2F;|| home                          &#x2F;&#x2F;首页</span><br><span class="line">  archives: &#x2F;archives&#x2F;|| archive          &#x2F;&#x2F;归档</span><br><span class="line">  categories: &#x2F;categories&#x2F;|| th           &#x2F;&#x2F;分类</span><br><span class="line">  tags: &#x2F;tags&#x2F;|| tags                     &#x2F;&#x2F;标签</span><br></pre></td></tr></table></figure>
-<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>在之后想要添加标签和分类的文章里，最前面贴上下面的代码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: next主题常用菜单的配置</span><br><span class="line">date: 2020年06月06日16:12:35</span><br><span class="line">tags: </span><br><span class="line">- next配置</span><br><span class="line">- next_tags</span><br><span class="line">categories:  </span><br><span class="line">- hexo</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-
-
-
-
-]]></content>
-      <categories>
-        <category>hexo_next</category>
-      </categories>
-      <tags>
-        <tag>next配置</tag>
+        <tag>MQ</tag>
       </tags>
   </entry>
   <entry>
@@ -323,120 +335,123 @@ Valine-Admin 的实现<blockquote>
       </tags>
   </entry>
   <entry>
-    <title>工厂模式</title>
-    <url>/2020/06/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>责任链模式</title>
-    <url>/2020/06/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>驾考科目三笔记</title>
-    <url>/2020/06/11/%E8%80%83%E9%A9%BE%E7%85%A7/%E7%A7%91%E7%9B%AE%E4%B8%89/</url>
-    <content><![CDATA[<h2 id="灯光的使用"><a href="#灯光的使用" class="headerlink" title="灯光的使用"></a>灯光的使用</h2><ul>
-<li>照明不良或没有照明，使用远光灯</li>
-<li>照明良好，跟车，会车，左右转弯，直行通过路口使用近光灯（夜间直行通过使用近光灯）</li>
-<li>夜间通过，超过，远近光灯交替使用</li>
-<li>路边临时停车，车辆出故障，交通事故，小灯（示廓灯）+双跳（危险警示灯）</li>
-</ul>
-<h2 id="考试步骤"><a href="#考试步骤" class="headerlink" title="考试步骤"></a>考试步骤</h2><ul>
-<li>调座椅 系安全带 打左转灯 回头看 拉手刹（转向灯亮三秒再动） 坡道起步</li>
-<li>15 换二档</li>
-<li>20 换三档</li>
-<li>30 换四档</li>
-<li>40 换五档</li>
-<li>松油门 松刹车 离合踩到底换挡</li>
-<li>转向灯打开3秒后方可变道等等</li>
-<li>转弯踩离合，刹到20换2档，路口点刹转头</li>
-<li>一档不超过50米  二档不超过100米   五档行驶100米</li>
-</ul>
+    <title>hexo常用操作</title>
+    <url>/2020/06/06/hexo/hexo/</url>
+    <content><![CDATA[<p>参考文章<a href="https://www.jianshu.com/p/dfcae367aae6" target="_blank" rel="noopener">Mac下基于github的hexo博客搭建及常用功能添加</a></p>
+<p>进入hexo项目下<br>本地启动</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>或者缩写</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
+<p>配置部署文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: https:&#x2F;&#x2F;github.com&#x2F;lbb-1011&#x2F;lbb-1011.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+<p>上传到github<br>退出保存_config.yml文件后，重新回到hexo的根目录下，再使用如下命令就可以完成部署了：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>也可以使用命令的简写：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<h1 id="coding部署"><a href="#coding部署" class="headerlink" title="coding部署"></a>coding部署</h1><p><a href="https://lbb-1011.coding.net/" target="_blank" rel="noopener">https://lbb-1011.coding.net/</a></p>
 ]]></content>
       <categories>
-        <category>其他</category>
+        <category>hexo</category>
       </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
   </entry>
   <entry>
-    <title>MySQL索引</title>
-    <url>/2020/06/18/MySQL%E7%B4%A2%E5%BC%95/</url>
-    <content><![CDATA[<h1 id="联合索引"><a href="#联合索引" class="headerlink" title="联合索引"></a>联合索引</h1><h2 id="索引最左前缀原理"><a href="#索引最左前缀原理" class="headerlink" title="索引最左前缀原理"></a>索引最左前缀原理</h2><p>按照 (a,b,c)按照abc依次排序</p>
-<p>索引优化</p>
+    <title>next左边栏日志点击有问题</title>
+    <url>/2020/06/06/hexo/next%E6%97%A5%E5%BF%97/</url>
+    <content><![CDATA[<h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>记录下出现的 问题：日志出现Cannot GET /archives/%7C%7C%20list/问题</p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>1，第一种解决办法<br>themes/next/_config.yml 文件下将archives：/archives/ || archive 改成archives：/archives/<br>删掉后面的||archive，的确能够解决问题，但是就没有图标了</p>
+<p>2，第二种解决办法<br>next主题目录下 找到文件/layout/_macro/sidebar.swig<br>修改以下内容（原因是url_for函数将||转码了）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;a href&#x3D;&quot;&#123;&#123;url_for(theme.menu.archives).split(&#39;||&#39;)[0] | trim &#125;&#125;&quot;&gt; </span><br><span class="line">改成</span><br><span class="line">&lt;a href&#x3D;&quot;&#123;&#123;url_for(theme.menu.archives.split(&#39;||&#39;)[0])| trim&#125;&#125;&quot;&gt;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>技术</category>
+        <category>hexo_next</category>
       </categories>
       <tags>
-        <tag>MySQL</tag>
-        <tag>索引</tag>
+        <tag>next配置</tag>
       </tags>
   </entry>
   <entry>
-    <title>Java学习技术栈</title>
-    <url>/2020/06/21/Java%E5%AD%A6%E4%B9%A0%E6%8A%80%E6%9C%AF%E6%A0%88/</url>
-    <content><![CDATA[<p>技术落后</p>
-<ul>
-<li>公司技术框架落后，工作主要是CRUD，没有机会接触底层技术<br>想去大厂</li>
-<li>大厂技术栈</li>
-</ul>
-<hr>
-<ul>
-<li>分布式架构</li>
-<li>分布式消息中间件</li>
-<li>rabbitmq</li>
-<li>kafka</li>
-<li>分布式存储中间件</li>
-<li>Redis</li>
-<li>MongoDB</li>
-<li>fastDFS</li>
-<li>Elasticsearch</li>
-<li>分布式框架</li>
-<li>DUBBO</li>
-<li>zookeeper</li>
-<li>netty</li>
-<li></li>
-</ul>
-<hr>
-<ul>
-<li>微服务架构</li>
-<li>源码分析</li>
-<li>并发编程</li>
-<li>性能优化</li>
-<li>数据结构与算法</li>
-<li>高并发实战项目经验</li>
-<li>工程化协作</li>
-</ul>
-<p>掌握的技术与工作年限严重不匹配<br>Java技术栈太多，不知道学哪些，没人指导</p>
+    <title>next分页显示有问题</title>
+    <url>/2020/06/06/hexo/next%E5%88%86%E9%A1%B5/</url>
+    <content><![CDATA[<p>错误显示<br><img src="http://qbhzsftsb.bkt.clouddn.com/WX20200606-172116%402x.png" alt="image-20200606170555849"><br>修改代码 themes\next\layout_partials\pagination.swig<br>原来的代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if page.prev or page.next %&#125;</span><br><span class="line">  &lt;nav class&#x3D;&quot;pagination&quot;&gt;</span><br><span class="line">    &#123;&#123;</span><br><span class="line">      paginator(&#123;</span><br><span class="line">        prev_text: &#39;&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;&#39;,</span><br><span class="line">        next_text: &#39;&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;&#39;,</span><br><span class="line">        mid_size: 1</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;&#125;</span><br><span class="line">  &lt;&#x2F;nav&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+<p>修改为</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if page.prev or page.next %&#125;</span><br><span class="line">  &lt;nav class&#x3D;&quot;pagination&quot;&gt;</span><br><span class="line">    &#123;&#123;</span><br><span class="line">      paginator(&#123;</span><br><span class="line">        prev_text: &#39;&lt;&#39;,</span><br><span class="line">        next_text: &#39;&gt;&#39;,</span><br><span class="line">        mid_size: 1</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;&#125;</span><br><span class="line">  &lt;&#x2F;nav&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+
 ]]></content>
+      <categories>
+        <category>hexo_next</category>
+      </categories>
+      <tags>
+        <tag>next配置</tag>
+      </tags>
   </entry>
   <entry>
-    <title>将输入的num，用最少的数字2次幂之和进行表示</title>
-    <url>/2020/06/28/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95001/</url>
-    <content><![CDATA[<p>将输入的num，用最少的数字2次幂之和进行表示</p>
+    <title>next主题常用菜单的配置</title>
+    <url>/2020/06/06/hexo/next%E6%A0%87%E7%AD%BE%E5%92%8C%E5%88%86%E7%B1%BB/</url>
+    <content><![CDATA[<h3 id="标签和分类"><a href="#标签和分类" class="headerlink" title="标签和分类"></a>标签和分类</h3><h4 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h4><p>新建一个标签页面，命名为tags<br>新建一个分类页面，命名为categories</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo new page tags</span><br><span class="line">$ hexo new page categories</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>示例<br>输入 n = 11<br>输出：3；<br>解释：11=9+1+1；9为3的2次幂，1为1的2次幂；所以最少需要3个数字的2次幂；<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="comment">//二分法查找最大整数平方根</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">mySqrt</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> r = x;</span><br><span class="line">        <span class="keyword">int</span> ans = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (l &lt;= r) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = l + (r - l) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> ((<span class="keyword">long</span>) mid * mid &lt;= x) &#123;</span><br><span class="line">                ans = mid;</span><br><span class="line">                l = mid + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                r = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">nums</span><span class="params">(<span class="keyword">int</span> nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l = nums;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (l &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> res = mySqrt(l);</span><br><span class="line">            l = l - res * res;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Test test = <span class="keyword">new</span> Test();</span><br><span class="line">        System.out.println(test.nums(<span class="number">11</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在source文件夹下会出现tags/index.md和categories/index.md<br>打开index.md做如下编辑，title可根据自己喜欢更改</p>
 </blockquote>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: tags</span><br><span class="line">date: 2017-07-10 16:36:26</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">---</span><br><span class="line">---</span><br><span class="line">title: categories</span><br><span class="line">date: 2017-07-10 16:36:26</span><br><span class="line">type: &quot;categories&quot;</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改-主题配置文件"><a href="#修改-主题配置文件" class="headerlink" title="修改 主题配置文件"></a>修改 主题配置文件</h4><p>找到menu，将tags取消注释</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: &#x2F;|| home                          &#x2F;&#x2F;首页</span><br><span class="line">  archives: &#x2F;archives&#x2F;|| archive          &#x2F;&#x2F;归档</span><br><span class="line">  categories: &#x2F;categories&#x2F;|| th           &#x2F;&#x2F;分类</span><br><span class="line">  tags: &#x2F;tags&#x2F;|| tags                     &#x2F;&#x2F;标签</span><br></pre></td></tr></table></figure>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>在之后想要添加标签和分类的文章里，最前面贴上下面的代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: next主题常用菜单的配置</span><br><span class="line">date: 2020年06月06日16:12:35</span><br><span class="line">tags: </span><br><span class="line">- next配置</span><br><span class="line">- next_tags</span><br><span class="line">categories:  </span><br><span class="line">- hexo</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+
+
+
+]]></content>
+      <categories>
+        <category>hexo_next</category>
+      </categories>
+      <tags>
+        <tag>next配置</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Redis安装</title>
+    <url>/2020/06/06/redis/Redis%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<h4 id="Redis安装"><a href="#Redis安装" class="headerlink" title="Redis安装"></a>Redis安装</h4><p>解压</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -zxf redis-6.0-rc1.tar.gz</span><br></pre></td></tr></table></figure>
+<p>redis解压包挪到/user/local</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mv redis-6.0-rc1 &#x2F;usr&#x2F;local&#x2F;</span><br></pre></td></tr></table></figure>
+<p>编译 进入文件夹/usr/local/redis-6.0-rc1</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+<p>安装redis 进入文件夹src</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p>为了方便管理 在Redis目录下创建  bin 和 etc</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_0_9_centos redis-4.0.9]# mkdir bin</span><br><span class="line">[root@VM_0_9_centos redis-4.0.9]# mkdir etc</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mv redis.conf &#x2F;usr&#x2F;local&#x2F;redis-4.0.9&#x2F;etc&#x2F;</span><br><span class="line">mv mkreleasehdr.sh redis-benchmark redis-check-aof redis-check-rdb redis-cli redis-server &#x2F;usr&#x2F;local&#x2F;redis-4.0.9&#x2F;bin&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>启动Redis 进入 bin目录</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_0_9_centos bin]# .&#x2F;redis-server</span><br></pre></td></tr></table></figure>
+<p>关闭redis</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;redis-cli shutdown</span><br></pre></td></tr></table></figure>
+
+<p>配置后台启动</p>
+<blockquote>
+<p>首先编辑conf文件，将daemonize属性改为yes（表明需要在后台运行）<br>再次启动redis服务，并指定启动服务配置文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;redis-server &#x2F;usr&#x2F;local&#x2F;redis-4.0.9&#x2F;etc&#x2F;redis.conf</span><br></pre></td></tr></table></figure>
+<h4 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h4><p>无法远程连接</p>
+<blockquote>
+<p>修改redis.conf 注释掉 bind 127.0.0.1<br>protected-mode 改为 no</p>
+</blockquote>
+<ul>
+<li>Redis Error: Connection failed. (Error: connect ETIMEDOUT)</li>
+</ul>
 ]]></content>
       <categories>
         <category>技术</category>
       </categories>
       <tags>
-        <tag>算法</tag>
+        <tag>redis</tag>
+        <tag>redis安装</tag>
       </tags>
   </entry>
 </search>
